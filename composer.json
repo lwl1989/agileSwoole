@@ -1,0 +1,13 @@
+{
+    "require-dev": {
+        "eaglewu/swoole-ide-helper": "dev-master"
+    },
+    "require": {
+        "psr/container": "^1.0",
+        "psr/http-message": "^1.0",
+        "igorw/config-service-provider": "^1.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "mongodb/mongodb": "^1.1",
+	    "fabpot/goutte":"^3.2"
+    }
+}
