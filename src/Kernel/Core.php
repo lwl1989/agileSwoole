@@ -33,7 +33,8 @@ class Core
                 $this->autoload($paths);
                 $this->container = new Container();
                 $this->container->bind('container', $this->container);
-                $this->container->bind('config', Config::class);
+                $config = $this->container->bind('config', Config::class)->get('config');
+                $config->setLoadPath($confPath);
                 $this->container->alias('Psr\Container\ContainerInterface', $this->container);
         }
 
@@ -71,7 +72,9 @@ class Core
                         return ;
                 }
                 spl_autoload_register(function(string $class) use ($paths) {
+
                         $file = DIRECTORY_SEPARATOR.str_replace('\\',DIRECTORY_SEPARATOR, $class).'.php';
+
                         foreach($paths as $path) {
                                 if(is_file($path.$file)) {
                                         include($path.$file);

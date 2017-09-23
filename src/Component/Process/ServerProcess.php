@@ -10,12 +10,13 @@ namespace Component\Process;
 
 
 use Kernel\Core;
+use Swoole\Process;
 
 class ServerProcess implements IProcess
 {
         public function setClosure(\Closure $closure)
         {
-                $process = new Swoole\Process($closure);
+                $process = new Process($closure);
                 Core::getInstant()->get('server')->getServer()->addProcess($process);
         }
 

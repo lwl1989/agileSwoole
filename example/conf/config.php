@@ -3,7 +3,7 @@
 /**
  * basic config
  */
-[
+return [
         'swoole'        =>      [
                 'worker_num' =>  2,    //开启两个worker进程
                 //'task_worker_num'=>'3',

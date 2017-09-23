@@ -68,7 +68,7 @@ class Config
                         $iterator = new \GlobIterator($path.DIRECTORY_SEPARATOR.'*.'.$this->type, \FilesystemIterator::KEY_AS_FILENAME);
                         if($iterator->count()>0) {
                                 foreach ($iterator as $item) {
-                                        $this->configs = array_merge($this->configs,$this->driver->load($item->getPathname()));
+                                        $this->configs = array_merge($this->configs, $this->driver->load($item->getPathname()));
                                 }
                         }
                 }

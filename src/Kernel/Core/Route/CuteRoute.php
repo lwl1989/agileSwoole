@@ -111,20 +111,22 @@ class CuteRoute implements IRoute
 	public function dispatch(string $path, string $method = 'get')
 	{
 		$route = $this->_match($path, $method);
+
 		$obj = [];
 
 		if($route) {
 			$call = $route->getStorage();
 			$params = $route->getParams();
 			if (is_array($call)) {
-				if (class_exists($call[0]) and $call[0] instanceof BasicController) {
+				//if (class_exists($call[0]) and $call[0] instanceof BasicController) {
                                         /** @var BasicController $obj */
 					$obj = Core::getInstant()->getContainer()->build($call[0]);
 					$type = $obj->getProducerType();
+                    $params = $params === null ? [] : $params;
 					return $this->_runProducer($obj, $call[1], $params, $type);
-				}else{
-                                        $obj = $call;
-                                }
+				//}else{
+                //    $obj = $call;
+                //}
 			}
 			if (is_string($call)) {
 				$obj = [$call];
