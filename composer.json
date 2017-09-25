@@ -1,5 +1,5 @@
 {
-    "name": "fresh_li/agile-swoole",
+    "name": "fresh-li/agile-swoole",
     "description": "A high-performance PHP development framework (using swoole)",
     "keywords": ["swoole","framework","performance"],
     "homepage": "https://github.com/lwl1989/agileSwoole",
