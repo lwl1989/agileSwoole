@@ -1,13 +1,30 @@
 {
+    "name": "freshLi/agileSwoole",
+    "description": "A high-performance PHP development framework (using swoole)",
+    "keywords": ["swoole","framework","performance"],
+    "homepage": "https://github.com/lwl1989/agileSwoole",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wenlong Li",
+            "email": "liwenlong0922@163.com",
+            "homepage": "https://my.oschina.net/lwl1989",
+            "role": "Sponsor"
+        }
+    ],
     "require-dev": {
         "eaglewu/swoole-ide-helper": "dev-master"
     },
     "require": {
+        "php": "^7.0",
         "psr/container": "^1.0",
         "psr/http-message": "^1.0",
         "igorw/config-service-provider": "^1.2",
         "guzzlehttp/guzzle": "^6.3",
         "mongodb/mongodb": "^1.1",
 	    "fabpot/goutte":"^3.2"
+    },
+    "autoload": {
+        "psr-4": { "src\\": "" }
     }
 }
