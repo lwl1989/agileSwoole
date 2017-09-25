@@ -1,8 +1,16 @@
-## About Swoole Framework
+## 关于Agile Swoole
 
-Swoole Framework is a high performance framework by PHP.
-    
-### quck start 
+一个高性能的PHP开发框架（swoole）
+
+###
+    特性
+        1.支持MVC
+        2.支持自定义常驻进程
+        3.支持不同的控制器类型
+        4.路由自定义
+        5.分布式（待开发）
+        
+### 快速开始
 
 index.php
 ```
@@ -14,76 +22,97 @@ define('CONF_PATH',realpath('../conf'));
 $app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
 ```
 
-run commond:
+运行命令:
 
 	php index.php
 
-hello word
+示例
 
 	input localhost:9550 in brower
 
-Other MVC operations are like any other framework
+支持MVC结构开发
 
 	Controller
 	Model
 	View
-
-
-```
-you can set http server:
-//http server example
-$http->setTask('request', function (\swoole_http_request $request, \swoole_http_response $response) use($container){
-	$_POST = json_decode($request->rawContent(), true);
-	try {
-		$data = ['code'=>0,'response'=> $container->get('route')->dispatch(
-			$request->server['request_uri'],strtolower($request->server['request_method'])
-		)];
-	}catch (Exception $exception) {
-		$data = ['code'=>$exception->getCode()>0?$exception->getCode():1, 'response'=>$exception->getMessage()];
-	}
-	$response->end(json_encode($data));
-});
-
-you can set tcp server:
-//tcp server example
-$tcp->setTask('receive', function (\swoole_server $server, $fd, $data) use($container){
-	$_POST = json_decode($data, true);
-	try {
-		$data = ['code'=>0,'response'=> $container->get('route')->dispatch(
-			$data['path'],$data['method']
-		)];
-	}catch (Exception $exception) {
-		$data = ['code'=>$exception->getCode()>0?$exception->getCode():1, 'response'=>$exception->getMessage()];
-	}
-	$server->send($fd, json_encode($data));
-});
-```
-
-
-### example route
+	
+### 路由
 
 ```
-return [
-	'route' =>[
-		'get'     =>      [
-			[
-				'path'          =>      '/',
-				'dispatch'      =>      'hello'
-			],
-
-		],
-		'post'  =>      [
-			[
-				'path'          =>      '/crawler',
-				'dispatch'      =>      [\Library\Task\CrawlerTask::class, 'run']
-			]
-		]
-	]
-];
-```
-
-### example request
-
-    http post /crawler 
+    CONF_PATH/route.php
+    return [
+        'route' =>[
+            'get'     =>      [
+                [
+                    'path'          =>      '/',
+                    'dispatch'      =>      'hello'
+                ],
+                [
+                    'path'          =>      '/welcome',
+                    'dispatch'      =>      ['Controller\Welcome','index']      
+                ]
+            ],
+            'post'  =>      [
+                [
+                    'path'      =>  '/'
+                    'dispatch'      =>      'this is post'
+                ],
+                [
+                     'path'          =>      '/welcome',
+                     'dispatch'      =>      ['Controller\Welcome','index']      
+                ]
+            ]
+        ]
+    ];
     
-    response will be new \Library\Task\CrawlerTask()->run();
+    GET: localhost:9550
+    hello
+    
+    GET: localhost:9550/welcome
+    hello world!
+    
+    POST: localhost:9550
+    this is post
+    
+    GET: localhost:9550/welcome
+    hello world!
+```
+
+### 3种不同的触发模式
+```
+    class Sync extends BasicController{
+        public function index()
+        {
+            return 'ff';
+        }
+    }
+    
+    {"code":0,"response":"ff"}
+    
+    class Process extends BasicController{
+            public function index()
+            {
+                return 'ff';
+            }
+    }
+    {"code":0,"response":{"processId":"{$processId}"}}
+    
+    class Task extends BasicController{
+            public function index()
+            {
+                return ff;
+            }
+    }
+    {"code":0}
+```
+
+### 常驻内存任务
+    
+```
+    $serverProcess = new ServerProcess();
+    $serverProcess->addProcess(function(){
+        while(true){
+            //do some things
+        }
+    });
+```
