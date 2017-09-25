@@ -11,6 +11,7 @@
         5.分布式（待开发）
         
 ### 快速开始
+composer require fresh-li/agile-swoole
 
 index.php
 ```
