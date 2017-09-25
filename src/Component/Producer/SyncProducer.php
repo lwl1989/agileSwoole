@@ -34,7 +34,7 @@ class SyncProducer implements IProducer
 
         public function run() : array
         {
-               $response = call_user_func([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+               $response = call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
                if(!is_array($response)) {
                        return ['code'=>0,'response'=>$response];
                }
@@ -43,15 +43,13 @@ class SyncProducer implements IProducer
 
         public function addAfter(\Closure $closure):IProducer
         {
-                // TODO: Implement addAfter() method.
                 return $this;
         }
 
-    public function getProcessId(): int
-    {
-        // TODO: Implement getProcessId() method.
-        return 0;
-    }
+        public function getProcessId(): int
+        {
+                return 0;
+        }
 
 
 }

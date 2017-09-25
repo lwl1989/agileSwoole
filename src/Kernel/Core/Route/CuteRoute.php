@@ -121,8 +121,9 @@ class CuteRoute implements IRoute
 				//if (class_exists($call[0]) and $call[0] instanceof BasicController) {
                                         /** @var BasicController $obj */
 					$obj = Core::getInstant()->getContainer()->build($call[0]);
+
 					$type = $obj->getProducerType();
-                    $params = $params === null ? [] : $params;
+                                        $params = $params === null ? [] : $params;
 					return $this->_runProducer($obj, $call[1], $params, $type);
 				//}else{
                 //    $obj = $call;

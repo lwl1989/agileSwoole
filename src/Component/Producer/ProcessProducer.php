@@ -45,7 +45,7 @@ class ProcessProducer implements IProducer
         {
                 try {
                         $process = new Process(function () {
-                                call_user_func([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+                                call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
                                 return 0;
                         });
                         $process->name('test');

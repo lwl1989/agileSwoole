@@ -34,7 +34,8 @@ class CrawlerTask
         public function getTaskStatus(string $name): array
         {
                 $table = $this->getTable(self::KEY .$name);
-                return $table->getAll();
+                $response =  $table->getAll();
+                return $response;
         }
 
         public function start(array $data)
@@ -62,7 +63,6 @@ class CrawlerTask
                         //可能由于CPU控制权限问题造成错乱暂时无法定位
                         //usleep(20000);
                 }
-
         }
 
         public function stop(string $name) : array
@@ -80,7 +80,7 @@ class CrawlerTask
                 return ['processId' => ''];
         }
 
-        public function reload(array $data) : array
+        public function reload(array $data)
         {
                 $hash = $this->getTable(self::KEY .$data['name']);
                 $cache = $hash->getAll();
@@ -89,7 +89,7 @@ class CrawlerTask
                                 $this->_delProcess($cache['processId']);
                         }
                 }
-                return $this->start($data);
+                $this->start($data);
         }
 
         public function getTable(string $key) : CrawlerTable

@@ -9,15 +9,14 @@
 namespace Library\Crawler;
 
 
-use Kernel\Server;
 
 class CrawlerTable
 {
         protected $key;
         protected $table;
-        public function __construct(string $key, Server $server)
+        public function __construct(string $key, \swoole_server $server)
         {
-                $this->table  = $server->getServer()->crawlerTable;
+                $this->table  = $server->crawlerTable;
                 $this->key = $key;
         }
 

@@ -34,13 +34,13 @@ class TaskProducer implements IProducer
 
         public function getProcessId(): int
         {
-            // TODO: Implement getProcessId() method.
+            return 0;
         }
 
         public function run() : array
         {
                $this->server->setTask('task', function (){
-                        return call_user_func([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+                        return call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
                });
                return ['code'=>0];
         }

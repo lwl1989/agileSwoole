@@ -13,17 +13,33 @@ return [
                         [
                                 'path'          =>      '/test',
                                 'dispatch'      =>      [\Library\Task\CrawlerGutto::class, 'run']
+                        ],
+                        [
+                                'path'          =>      '/crawler/:name',
+                                'dispatch'      =>      [\Controller\CrawlerGet::class, 'get']
                         ]
 
                 ],
                 'post'  =>      [
                         [
                                 'path'          =>      '/crawler',
-                                'dispatch'      =>      [\Controller\Crawler::class, 'run']
+                                'dispatch'      =>      [\Controller\Crawler::class, 'create']
                         ],
                         [
                                 'path'          =>      '/email',
                                 'dispatch'      =>      'email'
+                        ]
+                ],
+                'put'   =>      [
+                        [
+                                'path'          =>      '/crawler',
+                                'dispatch'      =>      [\Controller\Crawler::class, 'update']
+                        ]
+                ],
+                'delete'=>      [
+                        [
+                                'path'          =>      '/crawler',
+                                'dispatch'      =>      [\Controller\Crawler::class, 'delete']
                         ]
                 ]
         ]

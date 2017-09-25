@@ -11,6 +11,7 @@ namespace Controller;
 
 use Component\Controller\BasicController;
 use Library\Task\CrawlerTask;
+use Performer\CrawlerGet;
 
 class Crawler extends BasicController
 {
@@ -19,12 +20,6 @@ class Crawler extends BasicController
         const MIN_INTERVAL = 3600;
         const MAX_INTERVAL = self::DAY_SECOND;
 
-
-        public function get(string $task)
-        {
-                $crawlerTask = new CrawlerTask($this->server);
-                return $crawlerTask->getTaskStatus($task);
-        }
 
 	public function create()
         {
