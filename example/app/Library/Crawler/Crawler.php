@@ -41,6 +41,7 @@ class Crawler
         {
                 $this->downloadManager->setUrl($url);
                 $this->downloadManager->download(function ($url, $content) {
+                        var_dump($url);
                         if ($content !== '') {
                                 $this->parserManager->doParse($url, $content, $this->downloadManager->getUrlInfo('host'));
                                 $urls = array_filter($this->parserManager->getUrls(), function ($v) {

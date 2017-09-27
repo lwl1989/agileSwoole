@@ -2,6 +2,7 @@
 namespace Kernel\Core\Route;
 
 use Component\Controller\BasicController;
+use Component\Producer\IProducer;
 use Component\Producer\Producer;
 use Kernel\Core\Route\Cute\Router;
 use Kernel\Core;
@@ -147,7 +148,28 @@ class CuteRoute implements IRoute
 	private function _runProducer(BasicController $controller, string $method, array $params , string $type) : array
         {
                 $producer = Producer::getProducer($type);
+                $this->_addAction($producer, $controller, $method, 'Before');
+                $this->_addAction($producer, $controller, $method, 'After');
                 $producer->addProducer($controller, $method, $params);
                 return $producer->run();
+        }
+
+        /**
+         * 添加事物
+         * @param IProducer $producer
+         * @param $controller
+         * @param $method
+         * @param string $event
+         */
+        private function _addAction(IProducer $producer, $controller, $method, $event = 'After')
+        {
+                $add = 'add'.$event;
+                $event = $method.$event;
+
+                if(method_exists($controller, $event)) {
+                        $producer->$add(function () use($controller, $event) {
+                                $controller->$event();
+                        });
+                }
         }
 }

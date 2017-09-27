@@ -39,10 +39,16 @@ class TaskProducer implements IProducer
 
         public function run() : array
         {
-               $this->server->setTask('task', function (){
-                        return call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
-               });
+
+                $data = json_encode($this->producer);
+               $this->server->getServer()->task($data);
                return ['code'=>0];
+        }
+
+
+        public function addBefore(\Closure $closure):IProducer
+        {
+                return $this;
         }
 
         public function addAfter(\Closure $closure) :IProducer

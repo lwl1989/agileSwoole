@@ -10,8 +10,8 @@ namespace Controller;
 
 
 use Component\Controller\BasicController;
+use Library\Crawler\CrawlerTable;
 use Library\Task\CrawlerTask;
-use Performer\CrawlerGet;
 
 class Crawler extends BasicController
 {
@@ -19,32 +19,56 @@ class Crawler extends BasicController
         const DAY_SECOND = 86400;
         const MIN_INTERVAL = 3600;
         const MAX_INTERVAL = self::DAY_SECOND;
+        /*** @var CrawlerTask */
+        protected $crawlerTask;
+        protected $data;
 
+
+        public function createBefore()
+        {
+                $this->_diffArray();
+                return;
+        }
+
+        public function createAfter()
+        {
+                $data = $this->_getData();
+                $table = new CrawlerTable($data['name'], $this->server->getServer());
+                $producer = $this->getProducer();
+                $table->setField('processId', $producer->getProcessId());
+                $table->setField('stop','0');
+        }
+
+        public function updateAfter()
+        {
+                $this->createAfter();
+        }
+
+
+        public function updateBefore()
+        {
+                $this->_diffArray();
+                return;
+        }
 
 	public function create()
         {
-                $data = $this->_diffArray();
-                $crawlerTask = new CrawlerTask($this->server);
+                $data = $this->_getData();
+                $this->crawlerTask = new CrawlerTask($this->server);
                 $name = $data['name'];
-                $status = $crawlerTask->getTaskStatus($name);
+                $status = $this->crawlerTask ->getTaskStatus($name);
                 if(!empty($status) and $status['stop'] == 0) {
                         return $status;
-                }else{
-                        $table = $crawlerTask->getTable($name);
-                        $producer = $this->getProducer();
-                        $producer->addAfter(function () use($name, $table, $producer){
-                                $table->setField('processId', $producer->getProcessId());
-                                $table->setField('stop','0');
-                        });
-                        $crawlerTask->start($data);
+                } else {
+                        $this->crawlerTask ->start($data);
                 }
                 return [];
         }
 
         public function update()
         {
-                $data = $this->_diffArray();
-                $crawlerTask = new CrawlerTask($this->server);
+                $data = $this->_getData();
+                $this->crawlerTask = $crawlerTask = new CrawlerTask($this->server);
                 $name = $data['name'];
                 $status = $crawlerTask->getTaskStatus($name);
                 if(!empty($status) and $status['stop'] == 0) {
@@ -59,42 +83,39 @@ class Crawler extends BasicController
                 $crawlerTask->start($data);
         }
 
-        public function delete(string $task)
-        {
-                $crawlerTask = new CrawlerTask($this->server);
-                $status = $crawlerTask->getTaskStatus($task);
-                if(!empty($status) and $status['stop'] == 0) {
-                        $crawlerTask->stop($task);
-                }
-                return [];
-        }
+
 
         /**
          * 检查参数是否正确
-         * @return array
+         * @return bool
          * @throws \Exception
          */
-        private function _diffArray() : array
+        private function _diffArray() : bool
         {
-                $data = $_POST;
-                if(!isset($data['action'])) {
-                        throw new \Exception('params lost action');
-                }
-
-                $keys = ['target', 'action', 'task_en_name', 'number_count', 'interval', 'channel_rule'];
-                $diff = array_diff($keys, array_keys($data));
+                $keys = ['target', 'task_en_name', 'number_count', 'interval', 'channel_rule'];
+                $diff = array_diff($keys, array_keys($_POST));
                 if (!empty($diff)) {
                         throw new \Exception('params lost ' . json_encode($diff));
                 }
 
+                return true;
+        }
+
+        /**
+         * 获取数据
+         * @return array
+         */
+        private function _getData() : array
+        {
                 $params = [
-                        'action' => $data['action'],
-                        'flag' => $data['task_en_name'],
-                        'count' => $data['number_count']??'',
-                        'url' =>  str_replace('\/','/',$data['target']??''),
-                        'interval' => $data['interval']??'',
-                        'rule' => str_replace('\/','/',$data['channel_rule']??''),
+                        'name'  =>  $_POST['task_en_name'],
+                        'flag' => $_POST['task_en_name'],
+                        'count' => $_POST['number_count']??'',
+                        'url' =>  str_replace('\/','/',$_POST['target']??''),
+                        'interval' => $_POST['interval']??'',
+                        'rule' => str_replace('\/','/',$_POST['channel_rule']??''),
                 ];
+                $this->data = $params;
                 return $params;
         }
 

@@ -18,10 +18,17 @@ class ProcessProducer implements IProducer
         protected $producer = [];
         protected $server;
         protected $after;
+        protected $before;
         protected $processId = 0;
         public function __construct(Server $server)
         {
                 $this->server = $server;
+        }
+
+        public function addBefore(\Closure $closure):IProducer
+        {
+                $this->before[] = $closure;
+                return $this;
         }
 
         public function addProducer(BasicController $controller, string $method, array $args = []): IProducer
@@ -40,30 +47,38 @@ class ProcessProducer implements IProducer
                 return $this;
         }
 
-
         public function run() : array
         {
                 try {
-                        $process = new Process(function () {
-                                call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
-                                return 0;
-                        });
-                        $process->name('test');
-                        $process->start();
-                } catch (\Exception $exception) {
-                        return ['code'=>1];
-                }
-                \swoole_process::signal(SIGCHLD, function($sig) {
-                        //必须为false，非阻塞模式
-                        while($ret =  \swoole_process::wait(false)) {
-                                echo "PID={$ret['pid']} exists\n";
+                        if (!empty($this->before)) {
+                                foreach ($this->before as $closure) {
+                                        call_user_func($closure);
+                                }
                         }
-                });
-                $this->processId = $process->pid;
-                if(!empty($this->after)) {
-                      foreach ($this->after as $closure) {
-                              call_user_func($closure);
-                      }
+                        try {
+                                $process = new Process(function () {
+                                        call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+                                        return 0;
+                                });
+                                $process->name(get_class($this->producer['obj']).time());
+                                $process->start();
+                        } catch (\Exception $exception) {
+                                return ['code' => 1];
+                        }
+                        \swoole_process::signal(SIGCHLD, function ($sig) {
+                                //必须为false，非阻塞模式
+                                while ($ret = \swoole_process::wait(false)) {
+                                        echo "PID={$ret['pid']} exists\n";
+                                }
+                        });
+                        $this->processId = $process->pid;
+                        if (!empty($this->after)) {
+                                foreach ($this->after as $closure) {
+                                        call_user_func($closure);
+                                }
+                        }
+                }catch (\Exception $exception) {
+                        return ['code' => 1];
                 }
                 return ['code'=>0, 'processId' => $process->pid];
         }

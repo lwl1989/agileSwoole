@@ -31,9 +31,6 @@ class Container implements IContainer, \ArrayAccess
          */
         public function build($className)
         {
-                if($className == 'Kernel\Core\DB\DB') {
-                        var_dump($this->offsetExists($className));exit();
-                }
                 if(is_string($className) and $this->offsetExists($className)) {
                         $className =  $this->offsetGet($className);
                         if(is_object($className)) {

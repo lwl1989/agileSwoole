@@ -29,17 +29,19 @@ class Task implements Event
 
         public function doEvent(\swoole_server $server, $taskId, $fromId, $data)
         {
-                $this->data = $data;
-                $this->doClosure();
-        }
+                $data = json_decode($data, true);
 
-        public function doClosure()
-        {
-                if(!empty($this->data) and $this->callback != null) {
-                        $this->params = [$this->data];
-                        return call_user_func_array($this->callback, $this->params);
+                if(!is_array($data)) {
+                        return;
                 }
-                return ['code'=>0];
+
+                if(!isset($data['obj']) or !isset($data['method'])) {
+                        return;
+                }
+
+                $args = $data['args'] ?? [];
+
+                return call_user_func_array([$data['obj'], $data['method']], $args);
         }
 
 

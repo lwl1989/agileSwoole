@@ -91,7 +91,6 @@ class Udn
                $table = 'crawler.'.$this->dbName.'_'.date('ymd');
                $exists = $this->db->select('_id')->from($table)->where('url=?',[$url])->fetch(false);
                $content = array_merge(['url'=>$url], $content);
-               var_dump($this->db);
                if(!empty($exists)) {
                        $this->db->update($content)->from($table)->where('_id=?',[$exists['_id']])->execute();
                } else {

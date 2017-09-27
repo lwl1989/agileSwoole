@@ -41,6 +41,11 @@ class SyncProducer implements IProducer
                return $response;
         }
 
+        public function addBefore(\Closure $closure):IProducer
+        {
+                return $this;
+        }
+
         public function addAfter(\Closure $closure):IProducer
         {
                 return $this;

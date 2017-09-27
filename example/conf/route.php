@@ -16,7 +16,7 @@ return [
                         ],
                         [
                                 'path'          =>      '/crawler/:name',
-                                'dispatch'      =>      [\Controller\CrawlerGet::class, 'get']
+                                'dispatch'      =>      [\Controller\CrawlerAction::class, 'get']
                         ]
 
                 ],
@@ -38,8 +38,8 @@ return [
                 ],
                 'delete'=>      [
                         [
-                                'path'          =>      '/crawler',
-                                'dispatch'      =>      [\Controller\Crawler::class, 'delete']
+                                'path'          =>      '/crawler/:name',
+                                'dispatch'      =>      [\Controller\CrawlerAction::class, 'delete']
                         ]
                 ]
         ]

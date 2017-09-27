@@ -27,7 +27,8 @@ class Request implements Event
                         $response->end(json_encode(['code'=>0]));
                         return;
                 }
-                $_POST = json_decode($request->rawContent(), true);
+                $rawData = json_decode($request->rawContent(), true);
+                $_POST = $rawData;
                 try {
                         $data = ['code'=>0,'response'=> Core::getInstant()->get('route')->dispatch(
                                 $request->server['request_uri'],strtolower($request->server['request_method'])

@@ -41,10 +41,11 @@ class CrawlerTask
         public function start(array $data)
         {
                 $task = Crawler::getCrawler($data);
+                $task->runOne($data['url']);
                 while (true) {
                         try {
                                 if ($data['count'] > 0) {
-                                        if ($task->getGot() >= $this->data['count']) {
+                                        if ($task->getGot() >= $data['count']) {
                                                 break;
                                         }
                                 }
@@ -65,20 +66,6 @@ class CrawlerTask
                 }
         }
 
-        public function stop(string $name) : array
-        {
-                $hash = $this->getTable(self::KEY .$name);
-                $cache = $hash->getAll();
-
-                if (isset($cache['processId']) and $cache['stop'] == '0') {
-                        if (!empty($cache['processId'])) {
-                                $this->_delProcess($cache['processId']);
-                        }
-                        return ['processId'=>$cache['processId']];
-                }
-                unset($hash);
-                return ['processId' => ''];
-        }
 
         public function reload(array $data)
         {
@@ -86,7 +73,8 @@ class CrawlerTask
                 $cache = $hash->getAll();
                 if(isset($cache['processId']) and $cache['stop'] == '0') {
                         if (!empty($cache['processId'])) {
-                                $this->_delProcess($cache['processId']);
+                                \swoole_process::kill($cache['processId']);
+                                \swoole_process::wait(true);
                         }
                 }
                 $this->start($data);
@@ -97,14 +85,6 @@ class CrawlerTask
         	return new CrawlerTable($key, $this->server);
         }
 
-        private function _delProcess($processId)
-        {
-                $this->server->tick(20, function ($id) use ($processId) {
-                        echo "kill processId" . $processId . PHP_EOL;
-                        \swoole_process::kill($processId);
-                        \swoole_process::wait(true);
-                        \swoole_timer_clear($id);
-                });
-        }
+
 
 }

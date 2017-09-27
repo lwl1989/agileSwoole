@@ -27,7 +27,6 @@ class CrawlerGutto implements ITask
 		$crawler = $client->request('GET', 'http://blog.csdn.net/zht666/article/details/10373923');
 
 		$images = $crawler->images();
-		var_dump($crawler);
 		return $images;
 
 	}

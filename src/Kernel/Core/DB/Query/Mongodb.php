@@ -304,7 +304,7 @@ class Mongodb implements IQuery
 		$this->_reset();
 
 		if(!isset($result[0])) {
-			return null;
+			return [];
 		} elseif($object===false) {
 			return $result;
 		}else{
