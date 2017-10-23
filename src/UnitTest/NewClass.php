@@ -4,26 +4,57 @@
 namespace UnitTest;
 
 
-use Kernel\Core\Cache\Redis;
-use Kernel\Core\Cache\Redis\Set;
-
 class NewClass
 {
-        public function __construct(Redis $redis)
+        static $instance;
+
+        protected $id;
+        public function process(){
+                $b=new B;
+                $process = new Process(function () use($b){
+                        $b->test();
+                });
+                $this->id =  $process->id;
+                echo $process->id.PHP_EOL;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getId()
         {
-                $urls = new class($redis) extends Set{
-                        public function setKey(string $key) {
-                                $this->_key = $key;
-                        }
-                };
-                $urls1 = new class($redis) extends Set{
-                        public function setKey(string $key) {
-                                $this->_key = $key;
-                        }
-                };
-                $urls->setKey('a');
-                $urls1->setKey('b');
-                $urls->addValue('1111');
-                $urls1->addValue('22222');
+                return $this->id;
+        }
+
+
+        public static function getInstance()
+        {
+                if(self::$instance == null) {
+                        self::$instance = new self;
+                }
+                return self::$instance;
         }
 }
+
+
+class Process {
+        public $id = 0;
+        public function __construct(\Closure $closure)
+        {
+               $this->id = rand(1,100);
+               $closure();
+        }
+}
+
+
+class B {
+        protected $id;
+        public function test() {
+                echo 'A'.PHP_EOL;
+                echo NewClass::getInstance()->getId().PHP_EOL;
+        }
+}
+
+$c = NewClass::getInstance();
+$c->process();
+$c->process();
