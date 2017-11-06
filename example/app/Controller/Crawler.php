@@ -9,11 +9,11 @@
 namespace Controller;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 use Library\Crawler\CrawlerTable;
 use Library\Task\CrawlerTask;
 
-class Crawler extends BasicController
+class Crawler extends Controller
 {
         const KEY = 'crawler:list:';
         const DAY_SECOND = 86400;

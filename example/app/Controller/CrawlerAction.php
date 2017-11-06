@@ -9,10 +9,10 @@
 namespace Controller;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 use Library\Crawler\CrawlerTable;
 
-class CrawlerAction extends BasicController
+class CrawlerAction extends Controller
 {
         protected $producerType = 'sync';
         public function get(string $task)

@@ -9,7 +9,7 @@
 namespace Component\Producer;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 use Kernel\Server;
 use Swoole\Process;
 
@@ -31,7 +31,7 @@ class ProcessProducer implements IProducer
                 return $this;
         }
 
-        public function addProducer(BasicController $controller, string $method, array $args = []): IProducer
+        public function addProducer(Controller $controller, string $method, array $args = []): IProducer
         {
                 $this->producer = [
                         'obj'           =>      $controller,

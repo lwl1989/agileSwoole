@@ -8,7 +8,7 @@ use Component\Producer\Producer;
 use Component\Producer\IProducer;
 use Kernel\Server;
 
-class BasicController
+class Controller
 {
         protected $server;
         protected $producer;

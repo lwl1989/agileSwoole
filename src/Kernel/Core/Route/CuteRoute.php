@@ -1,7 +1,7 @@
 <?php
 namespace Kernel\Core\Route;
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 use Component\Producer\IProducer;
 use Component\Producer\Producer;
 use Kernel\Core\Route\Cute\Router;
@@ -36,6 +36,17 @@ class CuteRoute implements IRoute
 			}
 			foreach ($routes as $route) {
 				if(isset($route['path']) and isset($route['dispatch'])) {
+				        $dispatch = [
+				                'dispatch'      =>      $route['dispatch']
+                                        ];
+
+				        if(isset($route['after'])) {
+				                $dispatch['after'] = $route['after'];
+                                        }
+
+                                        if(isset($route['before'])) {
+				                $dispatch['before'] = $route['before'];
+                                        }
 					$this->add($method, $route['path'], $route['dispatch']);
 				}
 			}
@@ -116,19 +127,14 @@ class CuteRoute implements IRoute
 		$obj = [];
 
 		if($route) {
-			$call = $route->getStorage();
+		        $dispatch = $route->getStorage();
+		        $call = $dispatch['dispatch'] ?? [];
+			$before = $dispatch['before'] ?? [];
+			$after = $dispatch['after'] ?? [];
 			$params = $route->getParams();
-			if (is_array($call)) {
-				//if (class_exists($call[0]) and $call[0] instanceof BasicController) {
-                                        /** @var BasicController $obj */
-					$obj = Core::getInstant()->getContainer()->build($call[0]);
-
-					$type = $obj->getProducerType();
-                                        $params = $params === null ? [] : $params;
-					return $this->_runProducer($obj, $call[1], $params, $type);
-				//}else{
-                //    $obj = $call;
-                //}
+			if (is_array($call) and class_exists($call[0])) {
+                                $params = $params === null ? [] : $params;
+                                return $this->_runProducer($call, $params, $before, $after);
 			}
 			if (is_string($call)) {
 				$obj = [$call];
@@ -139,37 +145,40 @@ class CuteRoute implements IRoute
 
         /**
          * 執行任務
-         * @param BasicController $controller
-         * @param string $method
+         * @param array $call
+         * @param array $before
          * @param array $params
-         * @param string $type
+         * @param array $after
          * @return array
          */
-	private function _runProducer(BasicController $controller, string $method, array $params , string $type) : array
+	private function _runProducer($call, $params, $before, $after) : array
         {
-                $producer = Producer::getProducer($type);
-                $this->_addAction($producer, $controller, $method, 'Before');
-                $this->_addAction($producer, $controller, $method, 'After');
-                $producer->addProducer($controller, $method, $params);
+                /** @var Controller $obj */
+                $controller = Core::getInstant()->getContainer()->build($call[0]);
+                $producer = Producer::getProducer($obj->getProducerType());
+                $this->_addAction($producer,    $before,'Before');
+                $this->_addAction($producer,    $after, 'After');
+                $producer->addProducer($controller, $call[1], $params);
                 return $producer->run();
         }
 
         /**
          * 添加事物
          * @param IProducer $producer
-         * @param $controller
-         * @param $method
+         * @param $action
          * @param string $event
          */
-        private function _addAction(IProducer $producer, $controller, $method, $event = 'After')
+        private function _addAction(IProducer $producer, $action, $event = 'After')
         {
-                $add = 'add'.$event;
-                $event = $method.$event;
-
-                if(method_exists($controller, $event)) {
-                        $producer->$add(function () use($controller, $event) {
-                                $controller->$event();
-                        });
+                if(is_array($action) and class_exists($action[0])) {
+                        $this->_addAction($producer,
+                                function () use($action){
+                                        $obj = Core::getInstant()->getContainer()->build($action[0]);
+                                        $obj->$action[1]();
+                                },'$event');
+                }
+                if(is_callable($action)) {
+                        $this->_addAction($producer, $action , $event);
                 }
         }
 }

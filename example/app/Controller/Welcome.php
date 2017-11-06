@@ -9,9 +9,9 @@
 namespace Controller;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 
-class Welcome extends BasicController
+class Welcome extends Controller
 {
 	protected $driver;
 	protected $database;

@@ -9,7 +9,7 @@
 namespace Component\Producer;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 use Kernel\Server;
 
 class SyncProducer implements IProducer
@@ -21,7 +21,7 @@ class SyncProducer implements IProducer
                 $this->server = $server;
         }
 
-        public function addProducer(BasicController $controller, string $method, array $args = []): IProducer
+        public function addProducer(Controller $controller, string $method, array $args = []): IProducer
         {
                 $this->producer = [
                         'obj'           =>      $controller,

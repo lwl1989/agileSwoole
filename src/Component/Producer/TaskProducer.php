@@ -9,7 +9,7 @@
 namespace Component\Producer;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 use Kernel\Server;
 
 class TaskProducer implements IProducer
@@ -21,7 +21,7 @@ class TaskProducer implements IProducer
                 $this->server = $server;
         }
 
-        public function addProducer(BasicController $controller, string $method, array $args = []) : IProducer
+        public function addProducer(Controller $controller, string $method, array $args = []) : IProducer
         {
                 $this->producer = [
                         'obj'           =>      $controller,
@@ -39,8 +39,7 @@ class TaskProducer implements IProducer
 
         public function run() : array
         {
-
-                $data = json_encode($this->producer);
+               $data = json_encode($this->producer);
                $this->server->getServer()->task($data);
                return ['code'=>0];
         }

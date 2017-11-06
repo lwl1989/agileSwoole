@@ -9,11 +9,11 @@
 namespace Component\Producer;
 
 
-use Component\Controller\BasicController;
+use Component\Controller\Controller;
 
 interface IProducer
 {
-        public function addProducer(BasicController $controller, string $method, array $args = []) : IProducer;
+        public function addProducer(Controller $controller, string $method, array $args = []) : IProducer;
         public function addAfter(\Closure $closure): IProducer;
         public function addBefore(\Closure $closure):IProducer;
         public function run(): array ;
