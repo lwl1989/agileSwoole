@@ -26,14 +26,8 @@ class SwooleHttpServer implements Server
                         throw new \Exception('config not found');
                 }
                 $this->server = new \swoole_http_server($server['host'], $server['port'], $server['mode'], $server['type']);
-		//$this->createTable($config);
-               // $extend = $config->get('event')['namespace'] ?? '';
                 foreach (self::EVENT as $event) {
-                //        $class = $extend.'\\'.ucfirst($event);
-
-                //        if(!class_exists($class)) {
-                                $class = '\\Kernel\\Swoole\\Event\\Http\\'.ucfirst($event);
-                //        }
+                        $class = '\\Kernel\\Swoole\\Event\\Http\\'.ucfirst($event);
                         /* @var \Kernel\Swoole\Event\Event $callback */
                         $callback = new $class($this->server);
                         $this->event[$event] = $callback;

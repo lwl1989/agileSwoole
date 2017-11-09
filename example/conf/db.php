@@ -5,7 +5,7 @@
  */
 return [
         'mongodb'       =>      [
-                'uri'                   =>      'mongodb://127.0.0.1:56790,127.0.0.1:56791,127.0.0.1:56790/',
+                'uri'                   =>      'mongodb://127.0.0.1:27017,127.0.0.1:27017,127.0.0.1:27017/',
                 'uriOptions'            =>      [],
                 'driverOptions'         =>      [
                         'replicaSet'            => 'rs',

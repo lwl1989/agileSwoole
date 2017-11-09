@@ -1,18 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: li
- * Date: 17-9-20
- * Time: 下午6:17
- */
-
 namespace Component\Producer;
-
 
 use Kernel\Core;
 
 class Producer
 {
+        const PRODUCER_PROCESS = 'process';
+        const PRODUCER_SYNC = 'sync';
+        const PRODUCER_TASK = 'task';
+
         public static function getProducer(string $type) : IProducer
         {
                 switch ($type) {

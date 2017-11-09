@@ -40,8 +40,10 @@ class TaskProducer implements IProducer
         public function run() : array
         {
                $data = json_encode($this->producer);
-               $this->server->getServer()->task($data);
-               return ['code'=>0];
+               if($this->server->getServer()->task($data)){
+                       return ['code'=>0];
+               }
+               return ['code'=>1];
         }
 
 

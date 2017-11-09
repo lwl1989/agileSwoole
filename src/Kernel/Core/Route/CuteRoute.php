@@ -47,6 +47,11 @@ class CuteRoute implements IRoute
                                         if(isset($route['before'])) {
 				                $dispatch['before'] = $route['before'];
                                         }
+
+                                        if(isset($route['type'])) {
+                                                $dispatch['type'] = $route['type'];
+                                        }
+
 					$this->add($method, $route['path'], $route['dispatch']);
 				}
 			}
@@ -131,10 +136,11 @@ class CuteRoute implements IRoute
 		        $call = $dispatch['dispatch'] ?? [];
 			$before = $dispatch['before'] ?? [];
 			$after = $dispatch['after'] ?? [];
+			$type = $dispatch['type'] ?? Producer::PRODUCER_SYNC;
 			$params = $route->getParams();
 			if (is_array($call) and class_exists($call[0])) {
                                 $params = $params === null ? [] : $params;
-                                return $this->_runProducer($call, $params, $before, $after);
+                                return $this->_runProducer($call, $params, $before, $after, $type);
 			}
 			if (is_string($call)) {
 				$obj = [$call];
@@ -149,13 +155,14 @@ class CuteRoute implements IRoute
          * @param array $before
          * @param array $params
          * @param array $after
+         * @param string $type
          * @return array
          */
-	private function _runProducer($call, $params, $before, $after) : array
+	private function _runProducer($call, $params, $before, $after, string $type) : array
         {
                 /** @var Controller $obj */
                 $controller = Core::getInstant()->getContainer()->build($call[0]);
-                $producer = Producer::getProducer($obj->getProducerType());
+                $producer = Producer::getProducer($type);
                 $this->_addAction($producer,    $before,'Before');
                 $this->_addAction($producer,    $after, 'After');
                 $producer->addProducer($controller, $call[1], $params);

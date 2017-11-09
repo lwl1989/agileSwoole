@@ -11,36 +11,33 @@ return [
                                 'dispatch'      =>      [\Controller\Welcome::class, 'index']
                         ],
                         [
-                                'path'          =>      '/test',
-                                'dispatch'      =>      [\Library\Task\CrawlerGutto::class, 'run']
+                                'path'          =>      '/sync',
+                                'dispatch'      =>      [\Controller\Sync::class, 'run'],
+                                'type'          =>      \Component\Producer\Producer::PRODUCER_SYNC
                         ],
                         [
-                                'path'          =>      '/crawler/:name',
-                                'dispatch'      =>      [\Controller\CrawlerAction::class, 'get']
+                                'path'          =>      '/process',
+                                'dispatch'      =>      [\Controller\Process::class, 'run'],
+                                'before'        =>      [\Controller\Process::class, 'before'],
+                                'after'         =>      [\Controller\Process::class, 'after'],
+                                'type'          =>      \Component\Producer\Producer::PRODUCER_PROCESS
                         ]
 
                 ],
                 'post'  =>      [
                         [
-                                'path'          =>      '/crawler',
-                                'dispatch'      =>      [\Controller\Crawler::class, 'create']
+                                'path'          =>      '/process',
+                                'dispatch'      =>      [\Controller\Process::class, 'run'],
+                                'before'        =>      [\Controller\Process::class, 'before'],
+                                'after'         =>      [\Controller\Process::class, 'after'],
+                                'type'          =>      \Component\Producer\Producer::PRODUCER_PROCESS
                         ],
-                        [
-                                'path'          =>      '/email',
-                                'dispatch'      =>      'email'
-                        ]
                 ],
                 'put'   =>      [
-                        [
-                                'path'          =>      '/crawler',
-                                'dispatch'      =>      [\Controller\Crawler::class, 'update']
-                        ]
+                        //put
                 ],
                 'delete'=>      [
-                        [
-                                'path'          =>      '/crawler/:name',
-                                'dispatch'      =>      [\Controller\CrawlerAction::class, 'delete']
-                        ]
+                        //delete
                 ]
         ]
 ];
