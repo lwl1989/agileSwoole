@@ -41,47 +41,40 @@ $app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
 
 ```
     CONF_PATH/route.php
-    return [
-        'route' =>[
-            'get'     =>      [
-                [
-                    'path'          =>      '/',
-                    'dispatch'      =>      'hello'
-                ],
-                [
-                    'path'          =>      '/welcome',
-                    'dispatch'      =>      ['Controller\Welcome','index']      
-                ]
-            ],
-            'post'  =>      [
-                [
-                    'path'      =>  '/'
-                    'dispatch'      =>      'this is post'
-                ],
-                [
-                     'path'          =>      '/welcome',
-                     'dispatch'      =>      ['Controller\Welcome','index']      
-                ]
-            ]
-        ]
-    ];
+    [
+    'path'          =>      '/',
+    'dispatch'      =>      [\Controller\Welcome::class, 'index']
+    ],
+    [
+        'path'          =>      '/sync',
+        'dispatch'      =>      [\Controller\Sync::class, 'run'],
+        'type'          =>      \Component\Producer\Producer::PRODUCER_SYNC
+    ],
+    [
+        'path'          =>      '/process',
+        'dispatch'      =>      [\Controller\Process::class, 'run'],
+        'before'        =>      [\Controller\Process::class, 'before'],
+        'after'         =>      [\Controller\Process::class, 'after'],
+        'type'          =>      \Component\Producer\Producer::PRODUCER_PROCESS
+    ]
     
     GET: localhost:9550
-    hello
-    
-    GET: localhost:9550/welcome
     hello world!
     
-    POST: localhost:9550
-    this is post
+    GET: localhost:9550/sync
+    sync start
+    ... 10 seconds after
+    sync over
     
-    GET: localhost:9550/welcome
-    hello world!
+    POST: localhost:9550/process
+    this process berfore
+        create process ......
+    this process after
 ```
 
 ### 3种不同的触发模式
 ```
-    class Sync extends BasicController{
+    class Sync{
         public function index()
         {
             return 'ff';
@@ -90,7 +83,7 @@ $app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
     
     {"code":0,"response":"ff"}
     
-    class Process extends BasicController{
+    class Process{
             public function index()
             {
                 return 'ff';
@@ -98,7 +91,7 @@ $app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
     }
     {"code":0,"response":{"processId":"{$processId}"}}
     
-    class Task extends BasicController{
+    class Task{
             public function index()
             {
                 return ff;
@@ -107,7 +100,7 @@ $app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
     {"code":0}
 ```
 
-### 常驻内存任务
+### 常驻内存任务,开启服务立马启用
     
 ```
     $serverProcess = new ServerProcess();
