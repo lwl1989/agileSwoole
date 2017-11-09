@@ -22,7 +22,6 @@ return [
                                 'after'         =>      [\Controller\Process::class, 'after'],
                                 'type'          =>      \Component\Producer\Producer::PRODUCER_PROCESS
                         ]
-
                 ],
                 'post'  =>      [
                         [
