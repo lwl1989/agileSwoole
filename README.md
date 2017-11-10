@@ -12,9 +12,17 @@
         6.分布式（待开发）
         7.队列（待开发）
         
-### 基準測試
-    ab -c 100 -n 50000 http://127.0.0.1:9550/
+### 压力测试
+
+#### 测试机器     
+    双核 Intel(R) Pentium(R) CPU G2020 @ 2.90GHz
+    ddr3 1333mhz 4g
+    硬盘5400转
+    ubuntu 16.04 desktop
     
+#### 测试命令
+    ab -c 100 -n 50000 http://127.0.0.1:9550/
+#### 测试结果
     Server Software:        swoole-http-server
     Server Hostname:        127.0.0.1
     Server Port:            9550
