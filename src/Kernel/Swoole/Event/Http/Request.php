@@ -37,16 +37,11 @@ class Request implements Event
                         $data = ['code'=>$exception->getCode()>0?$exception->getCode():1, 'response'=>$exception->getMessage()];
                 }
                 if(isset($data['response']['view'])) {
-                        $res = $data['response'];
-                        if(isset($res['response'])) {
-                                $res['response_alisa'] = $res['response'];
-                                unset($res['response']);
-                        }
-                        extract($res);
+                        extract( $data['response']);
                         ob_start();
-                        include ($data['response']['view']);
+                        include($data['response']['view']); // PHP will be processed
                         $content = ob_get_contents();
-                        ob_clean();
+                        @ob_end_clean();
                 } else {
                         $content = json_encode($data);
                 }

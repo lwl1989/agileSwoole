@@ -31,7 +31,7 @@ class ProcessProducer implements IProducer
                 return $this;
         }
 
-        public function addProducer(Controller $controller, string $method, array $args = []): IProducer
+        public function addProducer($controller, string $method, array $args = []): IProducer
         {
                 $this->producer = [
                         'obj'           =>      $controller,

@@ -12,6 +12,34 @@
         6.分布式（待开发）
         7.队列（待开发）
         
+### 基準測試
+    ab -c 100 -n 50000 http://127.0.0.1:9550/
+    
+    Server Software:        swoole-http-server
+    Server Hostname:        127.0.0.1
+    Server Port:            9550
+    
+    Document Path:          /
+    Document Length:        0 bytes
+    
+    Concurrency Level:      100
+    Time taken for tests:   22.286 seconds
+    Complete requests:      50000
+    Failed requests:        0
+    Total transferred:      7350000 bytes
+    HTML transferred:       0 bytes
+    Requests per second:    2243.52 [#/sec] (mean)
+    Time per request:       44.573 [ms] (mean)
+    Time per request:       0.446 [ms] (mean, across all concurrent requests)
+    Transfer rate:          322.07 [Kbytes/sec] received
+    
+    Connection Times (ms)
+                  min  mean[+/-sd] median   max
+    Connect:        0    0   0.6      0      15
+    Processing:     0   44  32.3     44     254
+    Waiting:        0   44  32.3     43     248
+    Total:          0   45  32.3     44     254
+   
         
 ### 快速开始
 composer require fresh-li/agile-swoole:dev-master
@@ -113,3 +141,5 @@ $app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
         }
     });
 ```
+
+

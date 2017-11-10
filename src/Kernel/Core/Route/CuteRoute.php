@@ -52,7 +52,7 @@ class CuteRoute implements IRoute
                                                 $dispatch['type'] = $route['type'];
                                         }
 
-					$this->add($method, $route['path'], $route['dispatch']);
+					$this->add($method, $route['path'], $dispatch);
 				}
 			}
 
@@ -145,8 +145,11 @@ class CuteRoute implements IRoute
 			if (is_string($call)) {
 				$obj = [$call];
 			}
-		}
-		return $obj;
+                        return $obj;
+		}else{
+		        return ['code'=>404];
+                }
+
 	}
 
         /**
@@ -177,7 +180,7 @@ class CuteRoute implements IRoute
          */
         private function _addAction(IProducer $producer, $action, $event = 'After')
         {
-                if(is_array($action) and class_exists($action[0])) {
+                if(isset($action[0]) and class_exists($action[0])) {
                         $this->_addAction($producer,
                                 function () use($action){
                                         $obj = Core::getInstant()->getContainer()->build($action[0]);

@@ -21,7 +21,7 @@ class TaskProducer implements IProducer
                 $this->server = $server;
         }
 
-        public function addProducer(Controller $controller, string $method, array $args = []) : IProducer
+        public function addProducer($controller, string $method, array $args = []) : IProducer
         {
                 $this->producer = [
                         'obj'           =>      $controller,

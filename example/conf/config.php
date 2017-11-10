@@ -5,7 +5,7 @@
  */
 return [
         'swoole'        =>      [
-                'worker_num' =>  2,    //开启两个worker进程
+                'worker_num' =>  4,    //开启两个worker进程
                 //'task_worker_num'=>'3',
                 //'max_request' => 3,   //每个worker进程max request设置为3次
                 'dispatch_mode'=>3,
