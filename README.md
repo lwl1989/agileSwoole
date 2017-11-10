@@ -51,24 +51,8 @@
         
 ### 快速开始
 composer require fresh-li/agile-swoole:dev-master
-
-index.php
-```
-include '../vendor/autoload.php';
-include '../src/Kernel/Core.php';
-define('CORE_PATH',realpath('../src'));
-define('APP_PATH',realpath('../app'));
-define('CONF_PATH',realpath('../conf'));
-$app = new \Kernel\Core([CORE_PATH, APP_PATH], [CONF_PATH]);
-```
-
-运行命令:
-
-	php index.php
-
-示例
-
-	input localhost:9550 in brower
+cd bin
+php agile.php
 
 支持MVC结构开发
 
