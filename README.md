@@ -14,15 +14,19 @@
         
 ### 压力测试
 
-#### 测试机器     
+##### 测试机器
+     
     双核 Intel(R) Pentium(R) CPU G2020 @ 2.90GHz
     ddr3 1333mhz 4g
     硬盘5400转
     ubuntu 16.04 desktop
     
-#### 测试命令
+##### 测试命令
+
     ab -c 100 -n 50000 http://127.0.0.1:9550/
-#### 测试结果
+    
+##### 测试结果
+
     Server Software:        swoole-http-server
     Server Hostname:        127.0.0.1
     Server Port:            9550
@@ -50,19 +54,20 @@
    
         
 ### 快速开始
-composer require fresh-li/agile-swoole:dev-master
 
-cd bin
-
-php agile.php
+    composer require fresh-li/agile-swoole:dev-master
+    cd bin
+    php agile.php
+    
+    http://127.0.0.1:9550
 	
 ### 路由
 
 ```
     CONF_PATH/route.php
     [
-    'path'          =>      '/',
-    'dispatch'      =>      [\Controller\Welcome::class, 'index']
+        'path'          =>      '/',
+        'dispatch'      =>      [\Controller\Welcome::class, 'index']
     ],
     [
         'path'          =>      '/sync',
