@@ -81,7 +81,7 @@ class Config
                 }
 
                 if(!isset($this->configs[$name])) {
-                	throw new ConfigNotFoundException(ErrorCode::CONFIG_NOT_FOUND);
+                	throw new ConfigNotFoundException(ErrorCode::CONFIG_NOT_FOUND,$name);
                 }
                 return $this->configs[$name];
         }

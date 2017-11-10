@@ -3,7 +3,7 @@
 
 namespace Kernel\Swoole\Event\Http;
 
-use Kernel\Core;
+use Kernel\AgileCore as Core;
 use Kernel\Core\Cache\Type\Hash;
 use Kernel\Core\Cache\Redis;
 use Kernel\Swoole\Event\Event;

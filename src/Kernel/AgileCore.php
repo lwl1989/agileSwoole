@@ -3,20 +3,14 @@
 
 namespace Kernel;
 
-use Kernel\Core\Cache\Redis;
 use Kernel\Core\Conf\Config;
-use Kernel\Core\DB\DB;
-use Kernel\Core\DB\Mongodb;
 use Kernel\Core\Di\Container;
 use Kernel\Core\Di\IContainer;
-use Kernel\Swoole\SwooleHttpServer;
-use Kernel\Swoole\SwooleTcpServer;
-use Library\Crawler\Download\Udn;
 use Swoole\Mysql\Exception;
 
-class Core
+class AgileCore
 {
-        /* @var Core $core*/
+        /* @var AgileCore $core*/
         public static $core = null;
         protected $container;
         protected $reflection;

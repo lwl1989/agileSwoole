@@ -31,6 +31,7 @@ class Container implements IContainer, \ArrayAccess
          */
         public function build($className)
         {
+
                 if(is_string($className) and $this->offsetExists($className)) {
                         $className =  $this->offsetGet($className);
                         if(is_object($className)) {
@@ -57,6 +58,7 @@ class Container implements IContainer, \ArrayAccess
                 if (is_null($constructor)) {
                         return new $className;
                 }
+
                 // 取构造函数参数,通过 ReflectionParameter 数组返回参数列表
                 $parameters = $constructor->getParameters();
                 // 递归解析构造函数的参数

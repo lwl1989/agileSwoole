@@ -3,10 +3,8 @@
 
 namespace Kernel\Swoole\Event\Http;
 
-use Kernel\Core;
 use Kernel\Swoole\Event\Event;
 use Kernel\Swoole\Event\EventTrait;
-use Kernel\Core\Cache\Type\Hash;
 
 class Shutdown implements Event
 {

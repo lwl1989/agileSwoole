@@ -3,7 +3,7 @@
 namespace Kernel\Core\DB\Model;
 
 
-use Kernel\Core;
+use Kernel\AgileCore as Core;
 use Kernel\Core\Conf\Config;
 use Kernel\Core\DB\Query\IQuery;
 use Psr\Log\InvalidArgumentException;

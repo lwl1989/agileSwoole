@@ -5,7 +5,7 @@ use Component\Controller\Controller;
 use Component\Producer\IProducer;
 use Component\Producer\Producer;
 use Kernel\Core\Route\Cute\Router;
-use Kernel\Core;
+use Kernel\AgileCore as Core;
 use Kernel\Core\Conf\Config;
 
 

@@ -11,7 +11,7 @@ use Kernel\Swoole\Event\Event;
 class SwooleHttpServer implements Server
 {
         const EVENT = [
-                'request','task','finish'//,'packet','pipeMessage','task','finish','close'
+                'request','task','finish'
         ];
         protected $server;
         protected $event = [
@@ -21,19 +21,43 @@ class SwooleHttpServer implements Server
         public function __construct(Config $config)
         {
         	$this->config = $config;
-                $server = $config->get('server');
-                if(empty($server)) {
-                        throw new \Exception('config not found');
+
+                try{
+                        $serverConfig = $config->get('server');
+                }catch (\Exception $exception){
+                        $serverConfig = [
+                                'host'          =>      '0.0.0.0',
+                                'port'          =>      9550,
+                                'mode'          =>      SWOOLE_PROCESS,
+                                'type'          =>      SWOOLE_SOCK_TCP
+                        ];
                 }
-                $this->server = new \swoole_http_server($server['host'], $server['port'], $server['mode'], $server['type']);
+                $this->server = new \swoole_http_server($serverConfig['host'], $serverConfig['port'], $serverConfig['mode'], $serverConfig['type']);
                 foreach (self::EVENT as $event) {
-                        $class = '\\Kernel\\Swoole\\Event\\Http\\'.ucfirst($event);
+                        $class = '\\Kernel\\Swoole\\Event\\Http\\' . ucfirst($event);
                         /* @var \Kernel\Swoole\Event\Event $callback */
                         $callback = new $class($this->server);
                         $this->event[$event] = $callback;
                         $this->server->on($event, [$callback, 'doEvent']);
                 }
-                $this->server->set($config->get('swoole'));
+                try {
+                        $swooleOption = $config->get('swoole');
+                }catch (\Exception $exception) {
+                        $swooleOption = [
+                                'worker_num' =>  4,    //开启两个worker进程
+                                'task_worker_num'=>'3',
+                                'max_request' => 5000,   //每个worker进程max request设置为3次
+                                'dispatch_mode'=> 3,
+                                'open_eof_check' => true, //打开EOF检测
+                                'package_eof' => PHP_EOL, //设置EOF
+                                'open_cpu_affinity'     =>      true,
+                                'user'  =>      'www',   //设置运行用户
+                                'group' =>      'www',
+                                'buffer_output_size' => 32 * 1024 *1024, //必须为数字  输出缓存
+                                'socket_buffer_size' => 128 * 1024 *1024, //必须为数字 内存缓存
+                        ];
+                }
+                $this->server->set($swooleOption);
         }
 
         public function start(\Closure $callback = null): Server
@@ -47,7 +71,7 @@ class SwooleHttpServer implements Server
 
         public function shutdown(\Closure $callback = null): Server
         {
-                // TODO: Implement shutdown() method.
+                return $this;
         }
 
         public function close($fd, $fromId = 0) : Server

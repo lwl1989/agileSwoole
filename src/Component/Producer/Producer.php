@@ -1,7 +1,7 @@
 <?php
 namespace Component\Producer;
 
-use Kernel\Core;
+use Kernel\AgileCore as Core;
 
 class Producer
 {
