@@ -51,14 +51,10 @@
         
 ### 快速开始
 composer require fresh-li/agile-swoole:dev-master
+
 cd bin
+
 php agile.php
-
-支持MVC结构开发
-
-	Controller
-	Model
-	View
 	
 ### 路由
 

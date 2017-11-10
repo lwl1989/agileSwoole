@@ -163,7 +163,7 @@ class CuteRoute implements IRoute
          */
 	private function _runProducer($call, $params, $before, $after, string $type) : array
         {
-                /** @var Controller $obj */
+                /** @var $obj */
                 $controller = Core::getInstant()->getContainer()->build($call[0]);
                 $producer = Producer::getProducer($type);
                 $this->_addAction($producer,    $before,'Before');
