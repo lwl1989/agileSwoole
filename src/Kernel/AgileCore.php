@@ -46,10 +46,10 @@ class AgileCore
 
 	/**
 	 * 获取Core对象
-	 * @return Core
+	 * @return AgileCore
 	 * @throws Exception
 	 */
-        public static function getInstant() : Core
+        public static function getInstant() : AgileCore
         {
                 if(self::$core === null) {
                         throw new Exception('core is not construct');
