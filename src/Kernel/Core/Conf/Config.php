@@ -8,6 +8,10 @@ use Igorw\Silex\JsonConfigDriver;
 use Igorw\Silex\PhpConfigDriver;
 use Igorw\Silex\TomlConfigDriver;
 use Igorw\Silex\YamlConfigDriver;
+use Kernel\Core\Conf\Type\JsonConfig;
+use Kernel\Core\Conf\Type\PhpConfig;
+use Kernel\Core\Conf\Type\TomlConfig;
+use Kernel\Core\Conf\Type\YamlConfig;
 use Kernel\Core\Exception\ErrorCode;
 use Swoole\Mysql\Exception;
 
@@ -44,16 +48,16 @@ class Config
                         $type = strtolower($this->type);
                         switch ($type) {
                                 case 'php':
-                                        $this->driver = new PhpConfigDriver();
+                                        $this->driver = new PhpConfig();
                                         break;
                                 case  'yaml':
-                                        $this->driver = new YamlConfigDriver();
+                                        $this->driver = new YamlConfig();
                                         break;
                                 case 'json':
-                                        $this->driver = new JsonConfigDriver();
+                                        $this->driver = new JsonConfig();
                                         break;
                                 case 'toml':
-                                        $this->driver = new TomlConfigDriver();
+                                        $this->driver = new TomlConfig();
                                         break;
                                 default:
                                         throw new Exception('Config Driver not found', 1);
