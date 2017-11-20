@@ -9,7 +9,4 @@ $container->alias('redis', Redis::class);
 $http = $container->build( \Kernel\Swoole\SwooleHttpServer::class);
 $container->singleton(\Kernel\Server::class, \Kernel\Swoole\SwooleHttpServer::class, 'http');
 $container->singleton(\Kernel\Core\Route\IRoute::class, \Kernel\Core\Route\CuteRoute::class, 'route');
-/* @var \Kernel\Swoole\SwooleHttpServer $http */
-$http = $app->get('http');
-$http->createTable('crawler');
 $app->serverStart($http);

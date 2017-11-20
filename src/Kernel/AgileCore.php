@@ -88,9 +88,9 @@ class AgileCore
                 return $this->container->get($name);
         }
 
-        public function serverStart(Server $server, \Closure $closure = null)
+        public function serverStart(Server $server)
         {
-                $server->start($closure);
+                $server->start();
         }
 
         public function getContainer() : IContainer

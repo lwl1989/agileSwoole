@@ -60,17 +60,17 @@ class SwooleHttpServer implements Server
                 $this->server->set($swooleOption);
         }
 
-        public function start(\Closure $callback = null): Server
+        public function start(): Server
         {
-                if(!is_null($callback)) {
-                        $callback();
-                }
                 $this->server->start();
                 return $this;
         }
 
         public function shutdown(\Closure $callback = null): Server
         {
+                if(!is_null($callback)) {
+                        $callback();
+                }
                 return $this;
         }
 
