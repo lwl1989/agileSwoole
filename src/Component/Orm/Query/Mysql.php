@@ -1,8 +1,8 @@
 <?php
 
-namespace Kernel\Core\DB\Query;
+namespace Component\Orm\Query;
 
-use Kernel\Core\DB\Mysql as Connection;
+use Component\Orm\Mysql as Connection;
 class Mysql implements IQuery
 {
 	private $_database  = null;

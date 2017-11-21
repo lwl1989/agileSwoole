@@ -1,15 +1,15 @@
 <?php
 
-namespace Kernel\Core\DB\Query;
+namespace Component\Orm\Query;
 
 
-use Kernel\Core\DB\Query\Mongodb\Parser;
-use Kernel\Core\DB\Query\Mongodb\Tokenizer;
+use Component\Orm\Query\Mongodb\Parser;
+use Component\Orm\Query\Mongodb\Tokenizer;
 use MongoDB\BSON\ObjectID;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
 use MongoDB\Driver\Query;
-use Kernel\Core\DB\Mongodb as MongoConnection;
+use Component\Orm\Mongodb as MongoConnection;
 
 
 class Mongodb implements IQuery

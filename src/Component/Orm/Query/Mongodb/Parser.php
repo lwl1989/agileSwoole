@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\Core\DB\Query\Mongodb;
+namespace Component\Orm\Query\Mongodb;
 class Parser
 {
 	private static $_index  = 0;

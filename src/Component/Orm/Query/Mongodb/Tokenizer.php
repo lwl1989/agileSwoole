@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\Core\DB\Query\Mongodb;
+namespace Component\Orm\Query\Mongodb;
 class Tokenizer
 {
 	public static function tokenize($condition)

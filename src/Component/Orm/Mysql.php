@@ -1,15 +1,13 @@
 <?php
-namespace Kernel\Core\DB;
+namespace Component\Orm;
 
-use Kernel\Core\Conf\Config;
 
-class Mysql extends \PDO
+use Kernel\Core\IComponent\IConnection;
+
+class Mysql extends \PDO implements IConnection
 {
-
-
-	public function __construct(Config $config)
+	public function __construct(array $config)
 	{
-		$config = $config->get('pdo');
 		$dsn = $config['dsn'];
 		$user = $config['user'];
 		$password = $config['password'];

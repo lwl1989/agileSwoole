@@ -10,6 +10,10 @@ return [
                 'driverOptions'         =>      [
                         'replicaSet'            => 'rs',
                         'readPreference'        => 'primary'
+                ],
+                'pool'  =>      [
+                        'max'   =>      10,
+                        'init'  =>      3
                 ]
         ],
         'redis'         =>      [

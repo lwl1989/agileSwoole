@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Kernel\Core\DB\Query;
+namespace Component\Orm\Query;
 
 
 interface IQuery

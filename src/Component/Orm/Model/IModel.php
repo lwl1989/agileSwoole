@@ -1,9 +1,9 @@
 <?php
 
-namespace Kernel\Core\DB\Model;
+namespace Component\Orm\Model;
 
 
-use Kernel\Core\DB\Query\IQuery;
+use Component\Orm\Query\IQuery;
 
 interface IModel
 {

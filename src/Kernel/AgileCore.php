@@ -3,6 +3,9 @@
 
 namespace Kernel;
 
+use Component\Orm\Mongodb;
+use Component\Orm\Mysql;
+use Component\Orm\Pool\ConnectionPool;
 use Kernel\Core\Conf\Config;
 use Kernel\Core\Di\Container;
 use Kernel\Core\Di\IContainer;
@@ -14,6 +17,12 @@ class AgileCore
         public static $core = null;
         protected $container;
         protected $reflection;
+
+        protected $workerClassMap = [
+                'pool'  =>      ConnectionPool::class,
+                'mysql' =>      Mysql::class,
+                'mongo' =>      Mongodb::class
+        ];
 
         /**
          * 核心类构造
@@ -85,6 +94,9 @@ class AgileCore
          * @return mixed
          */
         public function get($name) {
+                if(isset($this->workerClassMap[$name])){
+                        return $this->container->get($this->workerClassMap[$name]);
+                }
                 return $this->container->get($name);
         }
 
@@ -96,6 +108,11 @@ class AgileCore
         public function getContainer() : IContainer
         {
                 return $this->container;
+        }
+
+        public function getWorkerStartClassName(string $name) : string
+        {
+                return isset($this->workerClassMap[$name]) ?: '';
         }
 
 }
