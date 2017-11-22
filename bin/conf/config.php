@@ -10,7 +10,7 @@ return [
                 'max_request' => 5000,   //每个worker进程max request设置为3次
                 'dispatch_mode'=>3,
                 //'task_max_request'=>0,
-                //'daemonize'     =>      1,
+                'daemonize'     =>      1,
                 //'log_file' => 'log/swoole.log',
                 // 'log_level'     =>      1,
                 //'heartbeat_check_interval'      =>      '60',  心跳检测
