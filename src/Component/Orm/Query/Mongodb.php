@@ -9,7 +9,7 @@ use MongoDB\BSON\ObjectID;
 use MongoDB\Driver\BulkWrite;
 use MongoDB\Driver\Command;
 use MongoDB\Driver\Query;
-use Component\Orm\Mongodb as MongoConnection;
+use Component\Orm\Connection\Mongodb as MongoConnection;
 
 
 class Mongodb implements IQuery

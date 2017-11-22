@@ -11,7 +11,7 @@ use Kernel\Swoole\Event\Event;
 class SwooleHttpServer implements Server
 {
         const EVENT = [
-                'request','task','finish'
+                'request','task','finish','workerStart'
         ];
         protected $server;
         protected $event = [

@@ -1,13 +1,14 @@
 <?php
-namespace Component\Orm;
+namespace Component\Orm\Connection;
 
-
+use Kernel\Core\Conf\Config;
 use Kernel\Core\IComponent\IConnection;
 
 class Mysql extends \PDO implements IConnection
 {
-	public function __construct(array $config)
+	public function __construct(Config $config)
 	{
+                $config = $config->get('mongodb');
 		$dsn = $config['dsn'];
 		$user = $config['user'];
 		$password = $config['password'];

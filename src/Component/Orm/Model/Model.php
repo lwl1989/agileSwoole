@@ -1,12 +1,14 @@
 <?php
 
-namespace Kernel\Core\DB\Model;
+namespace Component\Orm\Model;
 
 
+use Component\Orm\Query\Mongodb;
+use Component\Orm\Query\IQuery;
+use Component\Orm\Query\Mysql;
 use Kernel\AgileCore as Core;
 use Kernel\Core\Conf\Config;
-use Kernel\Core\DB\Query\IQuery;
-use Psr\Log\InvalidArgumentException;
+use Kernel\Core\Exception\ErrorCode;
 
 class Model implements IModel
 {
@@ -28,13 +30,13 @@ class Model implements IModel
 		$this->table = $dbConfig['table'];
 		switch ($this->driver) {
 			case 'pdo':
-				$this->db = $core->get(Core\DB\Query\Mysql::class);
+				$this->db = $core->get(Mysql::class);
 				break;
 			case 'mongodb':
-				$this->db = $core->get(Core\DB\Query\Mongodb::class);
+				$this->db = $core->get(Mongodb::class);
 				break;
 			default:
-				throw new InvalidArgumentException('can\'t use '. $this->driver, Core\Exception\ErrorCode::DB_DRIVER_ERROR);
+				throw new \InvalidArgumentException('can\'t use '. $this->driver, ErrorCode::DB_DRIVER_ERROR);
 		}
 	}
 

@@ -1,7 +1,6 @@
 <?php
 namespace Kernel\Core\Route;
 
-use Component\Controller\Controller;
 use Component\Producer\IProducer;
 use Component\Producer\Producer;
 use Kernel\Core\Route\Cute\Router;
@@ -51,7 +50,6 @@ class CuteRoute implements IRoute
                                         if(isset($route['type'])) {
                                                 $dispatch['type'] = $route['type'];
                                         }
-
 					$this->add($method, $route['path'], $dispatch);
 				}
 			}

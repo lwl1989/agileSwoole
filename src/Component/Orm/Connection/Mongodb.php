@@ -1,8 +1,9 @@
 <?php
 
 
-namespace Component\Orm;
+namespace Component\Orm\Connection;
 
+use Kernel\Core\Conf\Config;
 use Kernel\Core\IComponent\IConnection;
 use MongoDB\Driver\Command;
 use MongoDB\Driver\Manager;
@@ -11,8 +12,9 @@ use MongoDB\Driver\Manager;
 class Mongodb implements IConnection
 {
         protected $manager;
-        public function __construct(array $config)
+        public function __construct(Config $config)
         {
+                $config = $config->get('mongodb');
                 try {
                         $manager = new Manager($config['uri'], $config['uriOptions']??[]);
                         $command = new Command(['ping' => 1]);
@@ -23,6 +25,11 @@ class Mongodb implements IConnection
                 }
 
                 $this->manager = $manager;
+        }
+
+        public function getManager()
+        {
+                return $this->manager;
         }
 
 

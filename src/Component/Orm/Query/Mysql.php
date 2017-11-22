@@ -2,7 +2,7 @@
 
 namespace Component\Orm\Query;
 
-use Component\Orm\Mysql as Connection;
+use Component\Orm\Connection\Mysql as Connection;
 class Mysql implements IQuery
 {
 	private $_database  = null;

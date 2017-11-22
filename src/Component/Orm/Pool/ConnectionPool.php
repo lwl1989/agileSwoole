@@ -18,28 +18,29 @@ class ConnectionPool implements IConnectionPool
         public function __construct(Config $config)
         {
                 $this->config = [
-                        'mysql'         =>      $config->get('mysql'),
-                        'mongo'         =>      $config->get('mongo')
+                        'mysql'         =>      $config->get('mysql',false),
+                        'mongodb'       =>      $config->get('mongodb',false)
                 ];
         }
 
         public function init(): IConnectionPool
         {
-                if(isset($this->config['mysql']['pool'])) {
-                        $class = $this->_init('mysql');
-                        array_push($this->mysqlPool,['status'=>self::CONNECTION_STATUS_FREE,'obj'=>$class]);
-                }
-                if(isset($this->config['mysql']['pool'])) {
-                        $class = $this->_init('mongodb');
-                        array_push($this->mysqlPool,['status'=>self::CONNECTION_STATUS_FREE,'obj'=>$class]);
-                }
+                //todo:考慮是否需要
+//                if(isset($this->config['mysql']['pool'])) {
+//                        $class = $this->_init('mysql');
+//                        array_push($this->mysqlPool,['status'=>self::CONNECTION_STATUS_FREE,'obj'=>$class]);
+//                }
+//                if(isset($this->config['mongodb']['pool'])) {
+//                        $class = $this->_init('mongodb');
+//                        array_push($this->mongoPool,['status'=>self::CONNECTION_STATUS_FREE,'obj'=>$class]);
+//                }
                 return $this;
         }
 
         private function _init(string $connectionName) : IConnection
         {
                 $class = AgileCore::getInstant()->getWorkerStartClassName($connectionName);
-                if(!empty($class)) {
+                if(empty($class)) {
                         throw new \Exception($connectionName.' class not exists');
                 }
                 $config = $this->config[$connectionName];

@@ -29,7 +29,20 @@ class Request implements Event
                 }
                 $rawData = json_decode($request->rawContent(), true);
                 $_POST = $rawData;
+                if(class_exists('\Swoole\Coroutine')){
+                        \Swoole\Coroutine::create(function () use($response,$request){
+                                $this->dispath($request,$response);
+                        });
+                }else{
+                        $this->dispath($request,$response);
+                }
+
+        }
+
+        public function dispath(\swoole_http_request $request, \swoole_http_response $response)
+        {
                 try {
+
                         $data = ['code'=>0,'response'=> Core::getInstant()->get('route')->dispatch(
                                 $request->server['request_uri'],strtolower($request->server['request_method'])
                         )];

@@ -3,8 +3,8 @@
 
 namespace Kernel;
 
-use Component\Orm\Mongodb;
-use Component\Orm\Mysql;
+use Component\Orm\Connection\Mongodb;
+use Component\Orm\Connection\Mysql;
 use Component\Orm\Pool\ConnectionPool;
 use Kernel\Core\Conf\Config;
 use Kernel\Core\Di\Container;
@@ -21,7 +21,7 @@ class AgileCore
         protected $workerClassMap = [
                 'pool'  =>      ConnectionPool::class,
                 'mysql' =>      Mysql::class,
-                'mongo' =>      Mongodb::class
+                'mongodb'=>      Mongodb::class
         ];
 
         /**
@@ -112,7 +112,7 @@ class AgileCore
 
         public function getWorkerStartClassName(string $name) : string
         {
-                return isset($this->workerClassMap[$name]) ?: '';
+                return isset($this->workerClassMap[$name]) ? $this->workerClassMap[$name] : '';
         }
 
 }

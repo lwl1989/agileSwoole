@@ -78,14 +78,18 @@ class Config
                 }
         }
 
-        public function get(string $name)
+        public function get(string $name, bool $throw = true)
         {
                 if(!isset($this->configs[$name])){
                         $this->load();
                 }
 
                 if(!isset($this->configs[$name])) {
-                	throw new ConfigNotFoundException(ErrorCode::CONFIG_NOT_FOUND,$name);
+                        if($throw) {
+                                throw new ConfigNotFoundException(ErrorCode::CONFIG_NOT_FOUND, $name);
+                        }else{
+                                return [];
+                        }
                 }
                 return $this->configs[$name];
         }
