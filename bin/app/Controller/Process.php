@@ -21,8 +21,9 @@ class Process
 //                        $file = rand(0,99999);
 //                        file_put_contents($file.'.txt','sync !!!'.PHP_EOL, FILE_APPEND);
 //                });
+	
+                $file = rand(0,99999);
                 while (true) {
-                        $file = rand(0,99999);
                         file_put_contents($file.'.txt','sync !!!'.PHP_EOL, FILE_APPEND);
                 }
         }
