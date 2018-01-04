@@ -19,6 +19,12 @@ return [
                                 'dispatch'      =>     [\Controller\Welcome::class,'userInsert']
                         ],
 
-                ]
+                ],
+		'delete'	=>	[
+			 [
+                                'path'          =>      '/',
+                                'dispatch'      =>      'hello agile!'
+                        ],
+		]
         ]
 ];
