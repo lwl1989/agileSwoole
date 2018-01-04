@@ -18,6 +18,13 @@ return [
                                 'path'          =>      '/model/:user',
                                 'dispatch'      =>     [\Controller\Welcome::class,'userInsert']
                         ],
+                        [
+                                'path'          =>      '/process',
+                                'dispatch'      =>      [\Controller\Process::class, 'run'],
+                                'before'        =>      [\Controller\Process::class, 'before'],
+                                'after'         =>      [\Controller\Process::class, 'after'],
+                                'type'          =>      \Component\Producer\Producer::PRODUCER_PROCESS
+                        ]
 
                 ],
 		'delete'	=>	[

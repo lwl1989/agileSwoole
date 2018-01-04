@@ -12,10 +12,20 @@ class Process
 
         public function run()
         {
-                $i = 0;
-                swoole_timer_after(10000,function (){
-                        echo 'sync over';
-                });
+//                swoole_timer_after(10000,function (){
+//                        $file = rand(0,99999);
+//                        file_put_contents($file.'.txt','sync !!!'.PHP_EOL, FILE_APPEND);
+//                });
+//
+//                swoole_timer_tick(10000,function (){
+//                        $file = rand(0,99999);
+//                        file_put_contents($file.'.txt','sync !!!'.PHP_EOL, FILE_APPEND);
+//                });
+	
+                $file = rand(0,99999);
+                while (true) {
+                        file_put_contents($file.'.txt','sync !!!'.PHP_EOL, FILE_APPEND);
+                }
         }
 
         public function after()

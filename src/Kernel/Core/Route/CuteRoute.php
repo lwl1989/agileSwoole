@@ -178,15 +178,17 @@ class CuteRoute implements IRoute
          */
         private function _addAction(IProducer $producer, $action, $event = 'After')
         {
-                if(isset($action[0]) and class_exists($action[0])) {
-                        $this->_addAction($producer,
-                                function () use($action){
-                                        $obj = Core::getInstant()->getContainer()->build($action[0]);
-                                        $obj->$action[1]();
-                                },'$event');
-                }
-                if(is_callable($action)) {
-                        $this->_addAction($producer, $action , $event);
+                $func = 'add'.ucfirst($event);
+                if(method_exists($producer, $func)) {
+                        if(isset($action[0]) and class_exists($action[0])) {
+                              $producer->$func( function () use($action){
+                                      $obj = Core::getInstant()->getContainer()->build($action[0]);
+                                      $obj->{$action[1]}();
+                              });
+                        }
+                        if($action instanceof \Closure) {
+                                $producer->$func($action);
+                        }
                 }
         }
 }
