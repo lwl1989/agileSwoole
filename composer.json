@@ -23,6 +23,9 @@
         "guzzlehttp/guzzle": "^6.3"
     },
     "autoload": {
-        "psr-4": { "src\\": "" }
+        "psr-4": { 
+		"Kernel//": "src/Kernel", 
+		"Compoent//":"src/Compoent"
+	}
     }
 }
