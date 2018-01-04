@@ -61,7 +61,7 @@ class ProcessProducer implements IProducer
                                         return 0;
                                 });
                                 $process->name(get_class($this->producer['obj']).time());
-                                $process->start();
+                               $process->start();
                         } catch (\Exception $exception) {
                                 return ['code' => 1];
                         }
@@ -78,7 +78,8 @@ class ProcessProducer implements IProducer
                                 }
                         }
                 }catch (\Exception $exception) {
-                        return ['code' => 1];
+                        $code = intval($exception->getCode());
+                        return ['code' => $code>0?$code:1,'response'=>$exception->getMessage()];
                 }
                 return ['code'=>0, 'processId' => $process->pid];
         }
