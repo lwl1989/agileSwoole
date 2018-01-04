@@ -25,7 +25,7 @@
     "autoload": {
         "psr-4": { 
 		"Kernel\\": "src/Kernel", 
-		"Compoent\\":"src/Compoent"
+		"Component\\":"src/Component"
 	}
     }
 }
