@@ -12,7 +12,7 @@ namespace Component\Producer;
 use Component\Controller\Controller;
 use Kernel\Server;
 
-class TaskProducer implements IProducer
+class SyncProducer implements IProducer
 {
         protected $producer = [];
         protected $server;
@@ -21,7 +21,7 @@ class TaskProducer implements IProducer
                 $this->server = $server;
         }
 
-        public function addProducer($controller, string $method, array $args = []) : IProducer
+        public function addProducer($controller, string $method, array $args = []): IProducer
         {
                 $this->producer = [
                         'obj'           =>      $controller,
@@ -32,30 +32,29 @@ class TaskProducer implements IProducer
         }
 
 
-        public function getProcessId(): int
-        {
-            return 0;
-        }
-
         public function run() : array
         {
-               $data = json_encode($this->producer);
-               if($this->server->getServer()->task($data)){
-                       return ['code'=>0];
+               $response = call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+               if(!is_array($response)) {
+                       return ['code'=>0,'response'=>$response];
                }
-               return ['code'=>1];
+               return $response;
         }
-
 
         public function addBefore(\Closure $closure):IProducer
         {
                 return $this;
         }
 
-        public function addAfter(\Closure $closure) :IProducer
+        public function addAfter(\Closure $closure):IProducer
         {
-                // TODO: Implement addAfter() method.
                 return $this;
         }
+
+        public function getProcessId(): int
+        {
+                return 0;
+        }
+
 
 }

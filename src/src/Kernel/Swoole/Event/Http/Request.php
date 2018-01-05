@@ -27,10 +27,21 @@ class Request implements Event
                         $response->end(json_encode(['code'=>0]));
                         return;
                 }
-
                 $rawData = json_decode($request->rawContent(), true);
-                $_POST = $rawData;
-		
+                $post = [];
+                if(is_string($request->post)) {
+                       parse_str($request->post,$post);
+                }else if(is_array($request->post)){
+                        $post = $request->post;
+                }
+                if(is_array($rawData)) {
+                        if(!is_array($post)) {
+                                $post = [];
+                        }
+                        $_POST = array_merge($post,$rawData);
+                }else{
+                        $_POST = $post;
+                }
                 if(class_exists('\Swoole\Coroutine')){
                         \Swoole\Coroutine::create(function () use($response,$request){
                                 $this->dispath($request,$response);
