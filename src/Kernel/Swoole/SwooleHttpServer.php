@@ -100,7 +100,9 @@ class SwooleHttpServer implements Server
 	        $tableName = $table.'Table';
 	        $table = new \swoole_table($crawlerConfig['max_process']);
 	        $table->column('processId',\swoole_table::TYPE_INT);
-	        $table->column('stop',\swoole_table::TYPE_INT);
+	        $table->column('interval',\swoole_table::TYPE_INT);
+                $table->column('numberCount',\swoole_table::TYPE_INT);
+                $table->column('timeId', \swoole_table::TYPE_INT);
 	        $table->create();
 	        $this->server->$tableName = $table;
         }

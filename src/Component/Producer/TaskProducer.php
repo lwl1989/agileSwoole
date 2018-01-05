@@ -39,10 +39,20 @@ class TaskProducer implements IProducer
 
         public function run() : array
         {
-               $data = json_encode($this->producer);
-               if($this->server->getServer()->task($data)){
-                       return ['code'=>0];
-               }
+//               if($flag = $this->server->getServer()->task("test",-1,function (\swoole_server $serv, $task_id, $data){
+//                       var_dump("test");
+//                       call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+//                       return 0;
+//               })){
+//                       return ['code'=>0];
+//               }
+                $flag = $this->server->getServer()->task("taskcallback", -1, function (\swoole_server $serv, $task_id, $data) {
+                        call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
+                });
+
+                if($flag !== false) {
+                        return ['taskId'=>$flag];
+                }
                return ['code'=>1];
         }
 
