@@ -96,15 +96,21 @@ class SwooleHttpServer implements Server
 
         public function createTable(string $table)
         {
-	        $crawlerConfig = $this->config->get($table);
+	        $config = $this->config->get($table);
 	        $tableName = $table.'Table';
-	        $table = new \swoole_table($crawlerConfig['max_process']);
-	        $table->column('processId',\swoole_table::TYPE_INT);
-	        $table->column('interval',\swoole_table::TYPE_INT);
-                $table->column('numberCount',\swoole_table::TYPE_INT);
-                $table->column('timeId', \swoole_table::TYPE_INT);
+	        $table = new \swoole_table($config['max_process']);
+
+	        if(!isset($config['rule'])){
+	                return false;
+                }
+
+                foreach ($config['rule'] as $key=>$type) {
+                        $table->column($key, $type);
+                }
 	        $table->create();
 	        $this->server->$tableName = $table;
+
+	        return true;
         }
 
 }

@@ -37,7 +37,13 @@ return [
         ],
 
         'crawler'       =>      [
-                'max_process'   =>      20
+                'max_process'   =>      20,
+                'rule'          =>      [
+                        'processId'     =>      \swoole_table::TYPE_INT,
+                        'timeId'        =>      \swoole_table::TYPE_INT,
+                        'interval'      =>      \swoole_table::TYPE_INT,
+                        'numberAccount' =>      \swoole_table::TYPE_INT
+                ]
         ],
         'email' =>      [
                 'account'       =>      '',
