@@ -47,7 +47,7 @@ class ProcessProducer implements IProducer
                 return $this;
         }
 
-        public function run() : array
+        public function run()
         {
                 try {
                         if (!empty($this->before)) {

@@ -32,6 +32,9 @@ class AgileCore
      */
     public function __construct(array $paths = [], array $confPath = [])
     {
+        if(!defined('APP_PATH')) {
+            define('APP_PATH', $paths[0]);
+        }
         $this->isOne();
         $this->autoload($paths);
         $this->container = new Container();

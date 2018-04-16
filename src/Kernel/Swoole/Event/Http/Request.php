@@ -63,8 +63,10 @@ class Request implements Event
         } catch (\Exception $exception) {
             $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
         }
+
         if($data['response'] instanceof View) {
             $content = $data['response']->display();
+            unset($data['response']);
         }else if (isset($data['response']['view'])) {
             extract($data['response']);
             ob_start();

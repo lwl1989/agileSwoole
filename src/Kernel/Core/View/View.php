@@ -6,6 +6,7 @@ namespace Kernel\Core\View;
 
 use Kernel\AgileCore;
 use Kernel\Core\Exception\ErrorCode;
+use Kernel\Core\Exception\FileNotFoundException;
 
 class View
 {
@@ -21,10 +22,13 @@ class View
     public function __construct(string $path, array $data)
     {
         if(!is_file($path)) {
-            $config = AgileCore::getInstant()->get('config')->get('views');
-            $path = $config['path'].ltrim($path,'/');
-            if(!is_file($path)) {
-                throw new \Exception($path.' not found', ErrorCode::FILE_NOT_FOUND);
+            $default = APP_PATH.'/View/'.ltrim($path,'/');
+            if(!is_file($default)) {
+                $config = AgileCore::getInstant()->get('config')->get('views');
+                $path = $config['path'] . ltrim($path, '/');
+                if (!is_file($path)) {
+                    throw new FileNotFoundException($path . ' not found', ErrorCode::FILE_NOT_FOUND);
+                }
             }
         }
         $this->path = $path;
@@ -41,8 +45,20 @@ class View
         return $content;
     }
 
+    public function __destruct()
+    {
+        $this->path = '';
+        $this->data = [];
+    }
+
+    /**
+     * @param string $path
+     * @param array $data
+     * @return View
+     * @throws \Exception
+     */
     public static function render(string $path, array $data = [])
     {
-        return new static($path,$data);
+        return new self($path, $data);
     }
 }

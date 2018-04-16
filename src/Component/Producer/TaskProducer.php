@@ -37,7 +37,7 @@ class TaskProducer implements IProducer
             return 0;
         }
 
-        public function run() : array
+        public function run()
         {
 //               if($flag = $this->server->getServer()->task("test",-1,function (\swoole_server $serv, $task_id, $data){
 //                       var_dump("test");

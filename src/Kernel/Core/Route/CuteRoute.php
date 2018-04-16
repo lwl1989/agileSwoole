@@ -122,7 +122,7 @@ class CuteRoute implements IRoute
      * 解析路由
      * @param string $path
      * @param string $method
-     * @return array
+     * @return mixed|array
      */
     public function dispatch(string $path, string $method = 'get')
     {
@@ -158,10 +158,10 @@ class CuteRoute implements IRoute
      * @param array $params
      * @param array $after
      * @param string $type
-     * @return array
+     * @return mixed
      * @throws
      */
-    private function _runProducer($call, $params, $before, $after, string $type): array
+    private function _runProducer($call, $params, $before, $after, string $type)
     {
         /** @var $obj */
         $controller = Core::getInstant()->getContainer()->build($call[0]);

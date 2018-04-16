@@ -10,4 +10,6 @@ class ErrorCode
 	const DB_DRIVER_ERROR = 5301;
 
 	const FILE_NOT_FOUND = 6404;
+
+	const ROUTE_NOT_FOUND = 7404;
 }
