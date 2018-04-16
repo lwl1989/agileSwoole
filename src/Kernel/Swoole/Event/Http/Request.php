@@ -60,6 +60,10 @@ class Request implements Event
             $data = ['code' => 0, 'response' => Core::getInstant()->get('route')->dispatch(
                 $request->server['request_uri'], strtolower($request->server['request_method'])
             )];
+            if(isset($data['response']['code'])) {
+                $data['code'] = $data['response']['code'];
+                unset($data['response']['code']);
+            }
         } catch (\Exception $exception) {
             $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
         }

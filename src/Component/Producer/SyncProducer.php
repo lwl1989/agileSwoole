@@ -35,9 +35,6 @@ class SyncProducer implements IProducer
         public function run()
         {
                $response = call_user_func_array([$this->producer['obj'], $this->producer['method']], $this->producer['args']);
-               if(!is_array($response)) {
-                       return ['code'=>0,'response'=>$response];
-               }
                return $response;
         }
 
