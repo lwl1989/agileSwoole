@@ -17,7 +17,6 @@ class View
      * @param string $path
      * @param array $data
      * @throws \Exception
-     * @throws \Swoole\Mysql\Exception
      */
     public function __construct(string $path, array $data)
     {
@@ -28,6 +27,8 @@ class View
                 throw new \Exception($path.' not found', ErrorCode::FILE_NOT_FOUND);
             }
         }
+        $this->path = $path;
+        $this->data = $data;
     }
 
     public function display() : string
