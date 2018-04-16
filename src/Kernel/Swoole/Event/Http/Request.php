@@ -60,7 +60,7 @@ class Request implements Event
             $data = ['code' => 0, 'response' => Core::getInstant()->get('route')->dispatch(
                 $request->server['request_uri'], strtolower($request->server['request_method'])
             )];
-            if(isset($data['response']['code'])) {
+            if(is_array($data['response']) and isset($data['response']['code'])) {
                 $data['code'] = $data['response']['code'];
                 unset($data['response']['code']);
             }

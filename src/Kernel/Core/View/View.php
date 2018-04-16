@@ -22,15 +22,18 @@ class View
     public function __construct(string $path, array $data)
     {
         if(!is_file($path)) {
-            $default = APP_PATH.'/View/'.ltrim($path,'/');
+            $default = rtrim(APP_PATH,'/').'/View/'.ltrim($path,'/');
             if(!is_file($default)) {
                 $config = AgileCore::getInstant()->get('config')->get('views');
-                $path = $config['path'] . ltrim($path, '/');
+                $path = rtrim($config['path'],'/') .'/'. ltrim($path, '/');
                 if (!is_file($path)) {
                     throw new FileNotFoundException($path . ' not found', ErrorCode::FILE_NOT_FOUND);
                 }
+            }else{
+                $path = $default;
             }
         }
+
         $this->path = $path;
         $this->data = $data;
     }
