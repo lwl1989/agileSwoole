@@ -9,6 +9,8 @@
 namespace Kernel\Swoole\Event\Http;
 
 
+use Kernel\Core\Mime\Response;
+
 class Statics {
 
     /**
@@ -106,7 +108,7 @@ class Statics {
         } else {
             // 页面没找到
             $response->status(404);
-            $comm_response = new \Comm\Response($response);
+            $comm_response = new Response($response);
             $response->header('Content-Type', $comm_response->contentType('html'));
             $response->end('<h1>404 NOT FOUND</h1>');
         }

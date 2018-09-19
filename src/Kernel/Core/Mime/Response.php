@@ -41,16 +41,18 @@ class Response
     /**
      * 输出响应类型
      *
-     * @param string $type*
+     * @param string $type
+     * @param boolean $set
+     * @return string
      */
-    public function contentType($type) {
+    public function contentType($type, $set = false) {
         $content_type = self::showContentType($type);
 
-        if ($content_type) {
+        if ($content_type && $set) {
             $this->_response->header('Content-Type', $content_type);
         }
+        return $content_type;
     }
-
     /**
      * 根据扩展名获取Content-Type
      *
