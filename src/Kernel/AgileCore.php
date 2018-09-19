@@ -14,6 +14,8 @@ class AgileCore
 {
     /* @var AgileCore $core */
     public static $core = null;
+    /* @var \Kernel\Core\Conf\Config $core */
+    public static $config = null;
     protected $container;
     protected $reflection;
 
@@ -30,43 +32,60 @@ class AgileCore
      * @param array $confPath
      * @throws \Exception
      */
-    public function __construct(array $paths = [], array $confPath = [])
+    private function __construct(array $paths = [], array $confPath = [])
     {
         if(!defined('APP_PATH')) {
             define('APP_PATH', $paths[0]);
         }
-        $this->isOne();
         $this->autoload($paths);
         $this->container = new Container();
         $this->container->bind('container', $this->container);
         /** @var Config $config */
-        $config = $this->container->bind('config', Config::class)->get('config');
+        self::$config = $config = $this->container->bind('config', Config::class)->get('config');
         $config->setLoadPath($confPath);
         $this->container->alias('Psr\Container\ContainerInterface', $this->container);
     }
 
     /**
-     * 判断core类有没有被重复实例化
+     * @param string $driver
+     *
      * @throws \Exception
      */
-    private function isOne()
-    {
-        if (self::$core !== null) {
-            throw new \Exception('core has construct');
+    public static function setConfigDriver(string $driver) {
+        if(!(self::$core instanceof AgileCore)) {
+            throw new \Exception('please init core first!');
         }
-        self::$core = $this;
+
+        self::$config->setDriverType($driver);
     }
 
     /**
+     * @return \Kernel\AgileCore
+     * @throws \Exception
+     */
+    public static function getInstance()
+    {
+        if(!(self::$core instanceof AgileCore)) {
+            throw new \Exception('please init core first!');
+        }
+
+        return self::$core;
+    }
+    /**
      * 获取Core对象
+     *
+     * @param array $paths
+     * @param array $confPath
+     *
      * @return AgileCore
      * @throws \Exception
      */
-    public static function getInstant(): AgileCore
+    public static function init(array $paths = [], array $confPath = []) : AgileCore
     {
-        if (self::$core === null) {
-            throw new \Exception('core is not construct');
+        if(!(self::$core instanceof AgileCore)) {
+            self::$core = new self($paths, $confPath);
         }
+
         return self::$core;
     }
 
@@ -133,4 +152,8 @@ class AgileCore
         return isset($this->workerClassMap[$name]) ? $this->workerClassMap[$name] : '';
     }
 
+    protected function __clone()
+    {
+        // TODO: Implement __clone() method.
+    }
 }

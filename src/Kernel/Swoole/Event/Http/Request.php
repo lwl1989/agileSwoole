@@ -7,6 +7,7 @@ use Kernel\AgileCore as Core;
 use Kernel\Core\View\View;
 use Kernel\Swoole\Event\Event;
 use Kernel\Swoole\Event\EventTrait;
+use Kernel\Swoole\SwooleHttpServer;
 
 class Request implements Event
 {
@@ -23,6 +24,45 @@ class Request implements Event
     }
 
     public function doEvent(\swoole_http_request $request, \swoole_http_response $response)
+    {
+        $request_uri = $request->server['request_uri'];
+        if ($request_uri === '/favicon.ico' || strpos($request_uri, '/static/') === 0) {
+            // 处理静态文件
+            \Comm\Server\Statics::exec($request_uri, $request, $response);
+        } else {
+            // 动态文件交由Yaf处理
+            if(SwooleHttpServer::getAppType() === 'yaf') {
+                $application = SwooleHttpServer::getApplication();
+                try {
+                    $yaf_request = new \Yaf_Request_Http($request_uri);
+                    $yaf_request->setParam('request', $request);
+                    $yaf_request->setParam('response', $response);
+                    $application->getDispatcher()->dispatch($yaf_request);
+                } catch (\Exception $exception) {
+                    $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
+                    $response->end($content);
+                }
+            }else{
+                $this->normal($request, $response);
+            }
+
+        }
+
+    }
+    protected function yaf(\swoole_http_request $request, \swoole_http_response $response)
+    {
+        $application = SwooleHttpServer::getApplication();
+        try {
+            $yaf_request = new \Yaf_Request_Http($request_uri);
+            $yaf_request->setParam('request', $request);
+            $yaf_request->setParam('response', $response);
+            $application->getDispatcher()->dispatch($yaf_request);
+        } catch (\Exception $exception) {
+            $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
+            $response->end($content);
+        }
+    }
+    protected function normal(\swoole_http_request $request, \swoole_http_response $response)
     {
         if (isset($request->server['request_uri']) and $request->server['request_uri'] == '/favicon.ico') {
             $response->end(json_encode(['code' => 0]));
@@ -50,7 +90,6 @@ class Request implements Event
         } else {
             $this->dispath($request, $response);
         }
-
     }
 
     public function dispath(\swoole_http_request $request, \swoole_http_response $response)

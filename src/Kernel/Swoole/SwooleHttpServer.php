@@ -18,6 +18,8 @@ class SwooleHttpServer implements Server
 
     ];
     protected $config;
+    protected static $application = null;
+    public static $appType = 'normal';
 
     public function __construct(Config $config)
     {
@@ -112,6 +114,24 @@ class SwooleHttpServer implements Server
         $this->server->$tableName = $table;
 
         return true;
+    }
+
+    public static function getAppType()
+    {
+        return self::$appType;
+    }
+
+    public static function setApplication($application)
+    {
+        self::$application = $application;
+    }
+
+    /**
+     * @return \Yaf_Application
+     */
+    public static function getApplication()
+    {
+        return self::$application;
     }
 
 }

@@ -2,7 +2,7 @@
 
 include '../../vendor/autoload.php';
 include '../../src/Kernel/AgileCore.php';
-$app = new \Kernel\AgileCore([ realpath('../../src'), realpath('../app')], [realpath('../conf')]);
+$app = \Kernel\AgileCore::init([ realpath('../../src'), realpath('../app')], [realpath('../conf')]);
 $container = $app->getContainer();
 $container->alias('redis', Redis::class);
 //将ServerInterface设置为 HttpServer并且设置别名为http

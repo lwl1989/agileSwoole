@@ -7,6 +7,7 @@ use Kernel\AgileCore;
 use Kernel\Core\IComponent\IConnectionPool;
 use Kernel\Swoole\Event\Event;
 use Kernel\Swoole\Event\EventTrait;
+use Kernel\Swoole\SwooleHttpServer;
 
 class WorkerStart implements Event
 {
@@ -24,6 +25,14 @@ class WorkerStart implements Event
                 /** @var IConnectionPool $poolClass */
                 $poolClass = AgileCore::getInstant()->get('pool');
                 $poolClass->init();
+
+                if(SwooleHttpServer::getAppType() === 'yaf') {
+                    $config = AgileCore::getInstance()->get('config');
+                    //todo: see http://php.net/manual/zh/yaf-application.construct.php
+                    //It's can be array or file path(ini)
+                    $config = $config->get('application');
+                    SwooleHttpServer::setApplication(new \Yaf_Application($config));
+                }
                 $this->doClosure();
         }
 }
