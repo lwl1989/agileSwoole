@@ -6,11 +6,11 @@
 return [
         'swoole'        =>      [
                 'worker_num' =>  4,    //开启两个worker进程
-                'task_worker_num'=>'3',
-                'max_request' => 5000,   //每个worker进程max request设置为3次
+                //'task_worker_num'=>1,
+                'max_request' => 500,   //每个worker进程max request设置为3次
                 'dispatch_mode'=>3,
                 //'task_max_request'=>0,
-                'daemonize'     =>      false,
+                'daemonize'     =>      true,
                 //'log_file' => 'log/swoole.log',
                 // 'log_level'     =>      1,
                 //'heartbeat_check_interval'      =>      '60',  心跳检测
@@ -24,6 +24,7 @@ return [
                 //'ssl_key_file' => __DIR__.'/config/ssl.key',
                 // 'ssl_method' => SWOOLE_SSLv3_CLIENT_METHOD,
                 //'ssl_ciphers' => 'ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP',
+                'http_compression'  =>   true,  //only swoole 4.1+
                 'user'  =>      'www',   //设置运行用户
                 'group' =>      'www',
                 'buffer_output_size' => 32 * 1024 *1024, //必须为数字  输出缓存

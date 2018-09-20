@@ -13,14 +13,14 @@ class Producer
         {
                 switch ($type) {
                         case 'process':
-                                $producer = Core::getInstant()->get(ProcessProducer::class);
+                                $producer = Core::getInstance()->get(ProcessProducer::class);
                                 break;
                         case 'sync':
-                                $producer = Core::getInstant()->get(SyncProducer::class);
+                                $producer = Core::getInstance()->get(SyncProducer::class);
                                 break;
                         case 'task':
                         default:
-                                $producer = Core::getInstant()->get(TaskProducer::class);
+                                $producer = Core::getInstance()->get(TaskProducer::class);
                 }
                 return $producer;
         }

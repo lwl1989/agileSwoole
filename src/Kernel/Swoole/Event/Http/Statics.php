@@ -37,7 +37,7 @@ class Statics
 
 
         // 浏览器缓存 && \Comm\Misc::isProEnv()
-        if (!isset($config['expire']) && $config['expire'] > 0) {
+        if (isset($config['expire']) && $config['expire'] > 0) {
             $response->header('Cache-control', "max-age={$config['expire']}");
         }
 

@@ -39,7 +39,7 @@ class ConnectionPool implements IConnectionPool
 
         private function _init(string $connectionName) : IConnection
         {
-                $class = AgileCore::getInstant()->getWorkerStartClassName($connectionName);
+                $class = AgileCore::getInstance()->getWorkerStartClassName($connectionName);
                 if(empty($class)) {
                         throw new \Exception($connectionName.' class not exists');
                 }

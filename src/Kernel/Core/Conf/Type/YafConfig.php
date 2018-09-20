@@ -11,8 +11,16 @@ namespace Kernel\Core\Conf\Type;
 
 use Kernel\Core\Conf\IConfig;
 
-class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
+class YafConfig implements IConfig,\Iterator
 {
+    /**
+     * @var \Yaf_Config_Ini $yafConfig
+     */
+    protected $yafConfig;
+    public function __construct()
+    {
+    }
+
     /**
      *
      *获取配置节点的值
@@ -26,7 +34,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function get(string $name, $value)
     {
-        return parent::get($name, $value);
+        return $this->yafConfig->get($name, $value);
     }
 
     /**
@@ -37,7 +45,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function set(): Yaf_Config_Abstract
     {
-        return parent::set();
+        return $this->yafConfig;
     }
 
     /**
@@ -48,7 +56,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function readonly(): bool
     {
-        return parent::readonly();
+        return $this->yafConfig->readonly();
     }
 
     /**
@@ -59,7 +67,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function toArray(): array
     {
-        return parent::toArray();
+        return $this->yafConfig->toArray();
     }
 
     /**
@@ -70,7 +78,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function current()
     {
-        return parent::current();
+        return $this->yafConfig->current();
     }
 
     /**
@@ -81,7 +89,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function next()
     {
-        return parent::next();
+        return $this->yafConfig->next();
     }
 
     /**
@@ -92,7 +100,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function key()
     {
-        return parent::key();
+        return $this->yafConfig->key();
     }
 
     /**
@@ -103,7 +111,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function valid()
     {
-        return parent::valid();
+        return $this->yafConfig->valid();
     }
 
     /**
@@ -114,7 +122,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function rewind()
     {
-        parent::rewind();
+        $this->yafConfig->rewind();
         return $this;
     }
 
@@ -126,7 +134,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function count()
     {
-        return parent::count();
+        return $this->yafConfig->count();
     }
 
     /**
@@ -140,7 +148,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function offsetExists(string $offset)
     {
-        return parent::offsetExists($offset);
+        return $this->yafConfig->offsetExists($offset);
     }
 
     /**
@@ -154,7 +162,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function offsetGet(string $offset)
     {
-        return parent::offsetGet($offset);
+        return $this->yafConfig->offsetGet($offset);
     }
 
     /**
@@ -169,7 +177,7 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      */
     public function offsetSet(string $offset, $value)
     {
-        parent::offsetSet($offset, $value);
+        $this->yafConfig->offsetSet($offset, $value);
         return $this;
     }
 
@@ -183,13 +191,14 @@ class YafConfig extends \Yaf_Config_Abstract implements IConfig,\Iterator
      * @return \Kernel\Core\Conf\Type\YafConfig
      */
     public function offsetUnset(string $offset){
-        parent::offsetUnset($offset);
+        $this->yafConfig->offsetUnset($offset);
         return $this;
     }
 
     public function load(string $filename): array
     {
-        return $this->toArray();
+        $this->yafConfig = new \Yaf_Config_Ini($filename);
+        return $this->yafConfig->toArray();
     }
 
     public function supports(string $filename): bool

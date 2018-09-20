@@ -24,7 +24,7 @@ class View
         if(!is_file($path)) {
             $default = rtrim(APP_PATH,'/').'/View/'.ltrim($path,'/');
             if(!is_file($default)) {
-                $config = AgileCore::getInstant()->get('config')->get('views');
+                $config = AgileCore::getInstance()->get('config')->get('views');
                 $path = rtrim($config['path'],'/') .'/'. ltrim($path, '/');
                 if (!is_file($path)) {
                     throw new FileNotFoundException($path . ' not found', ErrorCode::FILE_NOT_FOUND);

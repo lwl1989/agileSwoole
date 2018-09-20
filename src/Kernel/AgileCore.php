@@ -58,7 +58,15 @@ class AgileCore
 
         self::$config->setDriverType($driver);
     }
-
+    /**
+     * 啊洗吧 英文不好 做兼容
+     * @return \Kernel\AgileCore
+     * @throws \Exception
+     */
+    public static function getInstant()
+    {
+        return self::getInstance();
+    }
     /**
      * @return \Kernel\AgileCore
      * @throws \Exception

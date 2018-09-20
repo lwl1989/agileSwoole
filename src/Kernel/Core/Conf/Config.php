@@ -72,8 +72,13 @@ class Config
         public function load()
         {
                 $this->init();
+                $type = $this->type;
+                if($this->type == 'yaf') {
+                    $type = 'ini';
+                }
                 foreach ($this->paths as $path) {
-                        $iterator = new \GlobIterator($path.DIRECTORY_SEPARATOR.'*.'.$this->type, \FilesystemIterator::KEY_AS_FILENAME);
+
+                        $iterator = new \GlobIterator($path.DIRECTORY_SEPARATOR.'*.'.$type, \FilesystemIterator::KEY_AS_FILENAME);
                         if($iterator->count()>0) {
                                 foreach ($iterator as $item) {
                                         $this->configs = array_merge($this->configs, $this->driver->load($item->getPathname()));
@@ -84,6 +89,7 @@ class Config
 
         public function get(string $name, bool $throw = true)
         {
+
                 if(!isset($this->configs[$name])){
                         $this->load();
                 }

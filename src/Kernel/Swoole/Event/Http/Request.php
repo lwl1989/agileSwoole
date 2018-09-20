@@ -28,20 +28,11 @@ class Request implements Event
         $request_uri = $request->server['request_uri'];
         if ($request_uri === '/favicon.ico' || strpos($request_uri, '/static/') === 0) {
             // 处理静态文件
-            \Comm\Server\Statics::exec($request_uri, $request, $response);
+            Statics::exec($request_uri, $request, $response);
         } else {
             // 动态文件交由Yaf处理
             if(SwooleHttpServer::getAppType() === 'yaf') {
-                $application = SwooleHttpServer::getApplication();
-                try {
-                    $yaf_request = new \Yaf_Request_Http($request_uri);
-                    $yaf_request->setParam('request', $request);
-                    $yaf_request->setParam('response', $response);
-                    $application->getDispatcher()->dispatch($yaf_request);
-                } catch (\Exception $exception) {
-                    $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
-                    $response->end($content);
-                }
+               $this->yaf($request, $response, $request_uri);
             }else{
                 $this->normal($request, $response);
             }
@@ -49,7 +40,7 @@ class Request implements Event
         }
 
     }
-    protected function yaf(\swoole_http_request $request, \swoole_http_response $response)
+    protected function yaf(\swoole_http_request $request, \swoole_http_response $response, string $request_uri)
     {
         $application = SwooleHttpServer::getApplication();
         try {
@@ -58,8 +49,9 @@ class Request implements Event
             $yaf_request->setParam('response', $response);
             $application->getDispatcher()->dispatch($yaf_request);
         } catch (\Exception $exception) {
+            var_dump($exception);
             $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
-            $response->end($content);
+            $response->end(json_encode($data));
         }
     }
     protected function normal(\swoole_http_request $request, \swoole_http_response $response)
@@ -96,7 +88,7 @@ class Request implements Event
     {
         try {
 
-            $data = ['code' => 0, 'response' => Core::getInstant()->get('route')->dispatch(
+            $data = ['code' => 0, 'response' => Core::getInstance()->get('route')->dispatch(
                 $request->server['request_uri'], strtolower($request->server['request_method'])
             )];
             if(is_array($data['response']) and isset($data['response']['code'])) {

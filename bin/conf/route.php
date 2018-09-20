@@ -11,7 +11,7 @@ return [
                                 'dispatch'      =>      'hello agile!'
                         ],
                         [
-                                'path'          =>      '/t',
+                                'path'          =>      '/welcome',
                                 'dispatch'      =>     [\Controller\Welcome::class,'index']
                         ],
                         [

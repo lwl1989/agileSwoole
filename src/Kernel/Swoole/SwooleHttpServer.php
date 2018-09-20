@@ -35,7 +35,7 @@ class SwooleHttpServer implements Server
                 'type' => SWOOLE_SOCK_TCP
             ];
         }
-        $this->server = new \swoole_http_server($serverConfig['host'], $serverConfig['port'], $serverConfig['mode'], $serverConfig['type']);
+        $this->server = new \Swoole\Http\Server($serverConfig['host'], $serverConfig['port'], $serverConfig['mode'], $serverConfig['type']);
         foreach (self::EVENT as $event) {
             $class = '\\Kernel\\Swoole\\Event\\Http\\' . ucfirst($event);
             /* @var \Kernel\Swoole\Event\Event $callback */
@@ -114,6 +114,11 @@ class SwooleHttpServer implements Server
         $this->server->$tableName = $table;
 
         return true;
+    }
+
+    public static function setAppType(string $appType)
+    {
+        self::$appType = $appType;
     }
 
     public static function getAppType()

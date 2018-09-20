@@ -22,7 +22,7 @@ class Model implements IModel
 	public function __construct()
 	{
 		/** @var $config Config */
-		$core = Core::getInstant();
+		$core = Core::getInstance();
 		$config = $core->get('config');
 		$dbConfig = $config->get($this->configName);
 		$this->driver = $dbConfig['driver'];

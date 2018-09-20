@@ -23,7 +23,7 @@ class WorkerStart implements Event
         public function doEvent(\swoole_server $server, $workerId)
         {
                 /** @var IConnectionPool $poolClass */
-                $poolClass = AgileCore::getInstant()->get('pool');
+                $poolClass = AgileCore::getInstance()->get('pool');
                 $poolClass->init();
 
                 if(SwooleHttpServer::getAppType() === 'yaf') {

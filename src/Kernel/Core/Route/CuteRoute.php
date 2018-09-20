@@ -17,7 +17,7 @@ class CuteRoute implements IRoute
 
     public static function getInstance(): IRoute
     {
-        return Core::getInstant()->getContainer()->get('route');
+        return Core::getInstance()->getContainer()->get('route');
     }
 
     public function __construct(Config $config)
@@ -164,7 +164,7 @@ class CuteRoute implements IRoute
     private function _runProducer($call, $params, $before, $after, string $type)
     {
         /** @var $obj */
-        $controller = Core::getInstant()->getContainer()->build($call[0]);
+        $controller = Core::getInstance()->getContainer()->build($call[0]);
         $producer = Producer::getProducer($type);
         $this->_addAction($producer, $before, 'Before');
         $this->_addAction($producer, $after, 'After');
@@ -184,7 +184,7 @@ class CuteRoute implements IRoute
         if (method_exists($producer, $func)) {
             if (isset($action[0]) and class_exists($action[0])) {
                 $producer->$func(function () use ($action) {
-                    $obj = Core::getInstant()->getContainer()->build($action[0]);
+                    $obj = Core::getInstance()->getContainer()->build($action[0]);
                     $obj->{$action[1]}();
                 });
             }
