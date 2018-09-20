@@ -118,12 +118,25 @@ class AgileCore
      * @return mixed|object
      * @throws Core\Di\ObjectNotFoundException
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (isset($this->workerClassMap[$name])) {
             return $this->container->get($this->workerClassMap[$name]);
         }
         return $this->container->get($name);
+    }
+
+    /**
+     * 获取配置
+     * @param string $name
+     * @param bool $throw
+     *
+     * @return array|mixed
+     * @throws \Kernel\Core\Conf\ConfigNotFoundException
+     */
+    public function getConfig(string $name, bool $throw = false)
+    {
+        return self::$config->get($name, $throw);
     }
 
     /**

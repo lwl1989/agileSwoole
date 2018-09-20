@@ -1,7 +1,7 @@
 <?php
 /**
- * Created by weibo.com
- * User: wenlong11
+ * Created by Wenlong li
+ * User: wenlong
  * Date: 2018/9/19
  * Time: 下午12:15
  */
@@ -53,6 +53,7 @@ class Response
         }
         return $content_type;
     }
+
     /**
      * 根据扩展名获取Content-Type
      *
@@ -63,7 +64,7 @@ class Response
     public static function showContentType($type) {
         $result = '';
         try {
-            $config = AgileCore::getInstance()->get('config')->get('statics');
+            $config = AgileCore::getInstance()->getConfig('statics');
             if (!empty($config[$type]['content_type'])) {
                 $result = $config[$type]['content_type'];
             }
@@ -101,7 +102,7 @@ class Response
      */
     public function json($code, $msg = '', $data = null) {
         $result = json_encode(['code' => $code, 'msg' => $msg, 'data' => $data]);
-        $this->contentType(self::TYPE_JS);
+        $this->contentType(self::TYPE_JSON);
         $this->_response->end($result);
     }
 }
