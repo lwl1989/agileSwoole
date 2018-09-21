@@ -491,6 +491,7 @@ class Mongodb implements IQuery
 		$this->_count    = 20;
 		$this->_state    = 0;
 		$this->_data     = [];
+        $this->connection->free();
 	}
 
 	protected function _condition($condition, array $bind)

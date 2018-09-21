@@ -10,7 +10,7 @@ return [
                 'table'         =>      date('Y-m-d')
         ],
         'users'  =>      [
-                'driver'        =>      'mongodb',
+                'driver'        =>      'sMysql',
                 'database'      =>      'test',
                 'table'         =>      'users'
         ]

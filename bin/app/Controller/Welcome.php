@@ -9,6 +9,8 @@ class Welcome
 {
         public function index()
         {
+            $this->userInsert('龙龙');
+            $this->userInsert('萌萌');
                 return [
                         'code'  =>      0,
                         'view'  =>      realpath(__DIR__.'/../View/index.php')

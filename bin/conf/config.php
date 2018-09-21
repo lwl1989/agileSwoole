@@ -5,12 +5,12 @@
  */
 return [
         'swoole'        =>      [
-                'worker_num' =>  4,    //开启两个worker进程
+                'worker_num' =>  8,    //开启两个worker进程
                 //'task_worker_num'=>1,
-                'max_request' => 500,   //每个worker进程max request设置为3次
+                'max_request' => 3,   //每个worker进程max request设置为3次
                 'dispatch_mode'=>3,
                 //'task_max_request'=>0,
-                'daemonize'     =>      true,
+                'daemonize'     =>      false,
                 //'log_file' => 'log/swoole.log',
                 // 'log_level'     =>      1,
                 //'heartbeat_check_interval'      =>      '60',  心跳检测

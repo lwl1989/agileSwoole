@@ -6,10 +6,12 @@ use Kernel\Core\IComponent\IConnection;
 
 class Mysql extends \PDO implements IConnection
 {
+    use HashCode;
+    use Free;
 	public function __construct(Config $config)
 	{
-                $config = $config->get('mongodb');
-		$dsn = $config['dsn'];
+	    $config = $config->get('mysql');
+		$dsn = 'mysql:host='.$config['host'].';';
 		$user = $config['user'];
 		$password = $config['password'];
 		$options = $config['options'] ?? [];
@@ -20,7 +22,7 @@ class Mysql extends \PDO implements IConnection
 			$charset = isset($options['charset']) ? $options['charset'] : 'utf8';
 			$dsn    .= (substr($dsn, -1)===';' ? '' : ';')."charset={$charset}";
 		}
-
+        //var_dump($dsn, $user, $options);
 		try {
 			//PDO::ATTR_PERSISTENT  长连接
 			parent::__construct($dsn, $user, $password, array(\PDO::ATTR_PERSISTENT => true));
@@ -35,6 +37,7 @@ class Mysql extends \PDO implements IConnection
 		$timezone = isset($options['timezone']) ? $options['timezone'] : '+00:00';
 		$this->exec("SET time_zone='{$timezone}'");
 		$this->exec("SET NAMES '{$charset}'");
+        $this->HashCode();
 	}
 
 }

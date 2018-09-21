@@ -11,6 +11,8 @@ use MongoDB\Driver\Manager;
 
 class Mongodb implements IConnection
 {
+    use HashCode;
+    use Free;
         protected $manager;
         public function __construct(Config $config)
         {
@@ -25,6 +27,7 @@ class Mongodb implements IConnection
                 }
 
                 $this->manager = $manager;
+            $this->HashCode();
         }
 
         public function getManager()

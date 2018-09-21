@@ -3,27 +3,29 @@
 namespace Component\Orm\Query;
 
 use Component\Orm\Connection\Mysql as Connection;
+use Kernel\AgileCore;
+
 class Mysql implements IQuery
 {
-	private $_database  = null;
-	private $_table     = null;
-	private $_key       = null;
+	protected $_database  = null;
+	protected $_table     = null;
+	protected $_key       = null;
 
-	private $_state     = 0;
-	private $_record    = false;
-	private $_type      = null;
+	protected $_state     = 0;
+	protected $_record    = false;
+	protected $_type      = null;
 
-	private $_columns   = '*';
-	private $_condition = '1';
-	private $_bind      = [];
-	private $_group     = '';
-	private $_having    = '';
-	private $_order     = [];
-	private $_offset    = 0;
-	private $_count     = 20;
+	protected $_columns   = '*';
+	protected $_condition = '1';
+	protected $_bind      = [];
+	protected $_group     = '';
+	protected $_having    = '';
+	protected $_order     = [];
+	protected $_offset    = 0;
+	protected $_count     = 20;
 
-	private $_fields    = [];
-	private $_values    = [];
+	protected $_fields    = [];
+	protected $_values    = [];
 
 	const INSERT = 'INSERT';
 	const SELECT = 'SELECT';
@@ -31,9 +33,10 @@ class Mysql implements IQuery
 	const DELETE = 'DELETE';
 
 	protected $connection;
-	public function __construct(Connection $connection)
+	public function __construct()
 	{
-		$this->connection = $connection;
+		$this->connection = AgileCore::getInstance()->get('pool')->getConnection('mysql');
+
 	}
 
 	public function insert(array $data, string $table): IQuery
@@ -214,7 +217,7 @@ class Mysql implements IQuery
 		if($object) {
 			$fetch = \PDO::FETCH_CLASS;
 		}
-		$result    = $statement->fetchAll($fetch);
+		$result = $statement->fetchAll($fetch);
 
 		$this->_reset();
 
@@ -291,7 +294,7 @@ class Mysql implements IQuery
 		return array('condition'=>$condition, 'bind'=>$bind);
 	}
 
-	private function _reset()
+	protected function _reset()
 	{
 		$this->_columns  = '*';
 		$this->_condition= '1';
@@ -304,5 +307,6 @@ class Mysql implements IQuery
 		$this->_state    = 0;
 		$this->_fields   = [];
 		$this->_values   = [];
+		$this->connection->free();
 	}
 }

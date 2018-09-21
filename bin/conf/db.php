@@ -22,7 +22,7 @@ return [
                 'db'    =>      5
         ],
         'mysql'         =>      [
-                'dns'           =>      '127.0.0.1',
+                'dsn'           =>      '127.0.0.1',
                 'user'          =>      'root',
                 'password'      =>      'sa'
         ],

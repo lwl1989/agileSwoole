@@ -3,6 +3,8 @@
 namespace Component\Orm\Model;
 
 
+
+use Component\Orm\Query\AsynMysql;
 use Component\Orm\Query\Mongodb;
 use Component\Orm\Query\IQuery;
 use Component\Orm\Query\Mysql;
@@ -12,7 +14,7 @@ use Kernel\Core\Exception\ErrorCode;
 
 class Model implements IModel
 {
-	protected $driver;
+	protected $driver = 'pdo';
 	protected $database;
 	protected $table;
 	/** @var IQuery */
@@ -25,9 +27,10 @@ class Model implements IModel
 		$core = Core::getInstance();
 		$config = $core->get('config');
 		$dbConfig = $config->get($this->configName);
-		$this->driver = $dbConfig['driver'];
+		$this->driver = $dbConfig['driver'] ??  $this->driver;
 		$this->database = $dbConfig['database'];
 		$this->table = $dbConfig['table'];
+
 		switch ($this->driver) {
 			case 'pdo':
 				$this->db = $core->get(Mysql::class);
@@ -35,6 +38,9 @@ class Model implements IModel
 			case 'mongodb':
 				$this->db = $core->get(Mongodb::class);
 				break;
+            case 'sMysql':
+                $this->db = $core->get(AsynMysql::class);
+                break;
 			default:
 				throw new \InvalidArgumentException('can\'t use '. $this->driver, ErrorCode::DB_DRIVER_ERROR);
 		}

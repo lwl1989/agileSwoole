@@ -1,8 +1,6 @@
 <?php
 /**
  * 引导文件定义
- *
- * @author chengxuan <i@chengxuan.li>
  */
 class Bootstrap extends Yaf_Bootstrap_Abstract {
 
