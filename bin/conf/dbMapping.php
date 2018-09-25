@@ -10,7 +10,7 @@ return [
                 'table'         =>      date('Y-m-d')
         ],
         'users'  =>      [
-                'driver'        =>      'sMysql',
+                'driver'        =>      'pdo',
                 'database'      =>      'test',
                 'table'         =>      'users'
         ]

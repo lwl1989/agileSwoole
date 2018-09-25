@@ -18,14 +18,22 @@ class AsynMysql extends Mysql implements IQuery
 	protected $connection;
 	public function __construct()
 	{
-		$this->connection = AgileCore::getInstance()->get('pool')->getConnection('mysql');
-	}
+        /* @var \Component\Orm\Pool\ConnectionPool pool */
+	    $pool = AgileCore::getInstance()->get('pool');
+		$this->connection = $pool->getConnection('mysql');
+        var_dump($this->connection);
+
+    }
 
 	public function execute(): string
 	{
 		$query     = $this->__toString();
 		$bind      = array_merge($this->_values, $this->_bind);
 		$statement = $this->connection->prepare($query);
+		if(!$statement) {
+		    throw new \Exception('sql prepare error!');
+        }
+	
 		$statement->execute($bind);
 
 		$this->_reset();

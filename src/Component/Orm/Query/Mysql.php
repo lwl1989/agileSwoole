@@ -36,7 +36,6 @@ class Mysql implements IQuery
 	public function __construct()
 	{
 		$this->connection = AgileCore::getInstance()->get('pool')->getConnection('mysql');
-
 	}
 
 	public function insert(array $data, string $table): IQuery
@@ -187,12 +186,14 @@ class Mysql implements IQuery
 		$bind      = array_merge($this->_values, $this->_bind);
 		$statement = $this->connection->prepare($query);
 		$statement->execute($bind);
-		$statement->closeCursor();
+		//$statement->closeCursor();
 
 		$this->_reset();
 
 		if($this->_type===static::INSERT) {
-			return $this->connection->lastInsertId();
+		    /** @var \PDO $connection */
+		    $connection = $this->connection;
+			return $connection->lastInsertId();
 		} else {
 			return strval($statement->rowCount());
 		}

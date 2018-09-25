@@ -4,7 +4,6 @@ namespace Component\Orm\Pool;
 
 
 use Component\Orm\Connection\AsynMysql;
-use Component\Orm\Connection\Mongodb;
 use Component\Orm\Connection\Mysql;
 use Kernel\AgileCore;
 use Kernel\Core\Conf\Config;
@@ -35,18 +34,25 @@ class ConnectionPool implements IConnectionPool
         $coreConfig = AgileCore::getInstance()->get('config');
         foreach ($this->config as $key => $value) {
             for ($i = 0; $i < $value['start']; $i++) {
-                $this->addConnection(new AsynMysql($coreConfig), $key);
+                $this->addConnection(new Mysql($coreConfig), $key);
             }
         }
         return $this;
     }
 
-    public function getConnection(string $connection)
+    public function getConnection(string $connection) : IConnection
     {
-        return $this->generatorConnection($connection)->current();
+       return $this->generatorConnection($connection)->current();
     }
 
     protected function generatorConnection(string $connection)
+    {
+        while (($con = $this->_getConnection($connection))){
+            yield $con;
+        }
+    }
+
+    protected function _getConnection(string $connection)
     {
         switch ($connection) {
             case 'mysql':
@@ -58,17 +64,13 @@ class ConnectionPool implements IConnectionPool
             default:
                 throw new \Exception('not support this connection with name: ' . $connection);
         }
-        while (true) {
-            if (empty($connections['conn'])) {
-                //$connections['conn'] = [];
-                continue;
-            }
+        $con = false;
+        if(!empty($connections['conn'])) {
             $code = array_rand($connections['conn']);
             $con = $connections['conn'][$code];
-            //$this->runtime[$code] = $con;
             unset($this->mysqlPool['conn'][$code]);
-            yield $con;
         }
+        return $con;
     }
 
 
@@ -77,6 +79,7 @@ class ConnectionPool implements IConnectionPool
         if($connectionType == 'mysql') {
             $this->mysqlPool['conn'][$connection->hashCode()] = $connection;
         }
+
         if($connectionType == 'mongo') {
             $this->mongoPool['conn'][$connection->hashCode()] = $connection;
         }
@@ -85,11 +88,7 @@ class ConnectionPool implements IConnectionPool
 
     public function free(IConnection $connection)
     {
-//        $hash = $connection->hashCode();
-//        if(isset($this->mysqlPool[$hash])) {
-//            unset($this->runtime[$hash]);
-//        }
-        echo 'free with '.$connection->hashCode().PHP_EOL;
+        //echo 'free with '.$connection->hashCode().PHP_EOL;
         $this->addConnection($connection);
     }
 }
