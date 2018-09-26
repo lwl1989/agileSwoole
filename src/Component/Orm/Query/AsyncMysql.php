@@ -63,6 +63,7 @@ class AsyncMysql extends Mysql implements IQuery
 	}
 
 	protected function _reset(){
+        $this->connection->setDefer(false);
 	    parent::_reset();
 	    //$this->connection->setDefer(true);
     }
