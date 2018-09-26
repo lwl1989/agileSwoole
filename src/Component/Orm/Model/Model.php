@@ -4,7 +4,7 @@ namespace Component\Orm\Model;
 
 
 
-use Component\Orm\Query\AsynMysql;
+use Component\Orm\Query\AsyncMysql;
 use Component\Orm\Query\Mongodb;
 use Component\Orm\Query\IQuery;
 use Component\Orm\Query\Mysql;
@@ -33,13 +33,13 @@ class Model implements IModel
 
 		switch ($this->driver) {
 			case 'pdo':
-				$this->db = $core->get(Mysql::class);
+				$this->db = new Mysql();
 				break;
 			case 'mongodb':
 				$this->db = $core->get(Mongodb::class);
 				break;
-            case 'sMysql':
-                $this->db = $core->get(AsynMysql::class);
+            case 'async':
+                $this->db = new AsyncMysql();
                 break;
 			default:
 				throw new \InvalidArgumentException('can\'t use '. $this->driver, ErrorCode::DB_DRIVER_ERROR);

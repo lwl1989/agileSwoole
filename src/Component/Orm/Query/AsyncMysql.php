@@ -2,10 +2,9 @@
 
 namespace Component\Orm\Query;
 
-use Component\Orm\Connection\AsynMysql as Connection;
 use Kernel\AgileCore;
 
-class AsynMysql extends Mysql implements IQuery
+class AsyncMysql extends Mysql implements IQuery
 {
 	const INSERT = 'INSERT';
 	const SELECT = 'SELECT';
@@ -13,16 +12,14 @@ class AsynMysql extends Mysql implements IQuery
 	const DELETE = 'DELETE';
 
     /**
-     * @var \Component\Orm\Connection\AsynMysql
+     * @var \Component\Orm\Connection\AsyncMysql
      */
 	protected $connection;
 	public function __construct()
 	{
         /* @var \Component\Orm\Pool\ConnectionPool pool */
 	    $pool = AgileCore::getInstance()->get('pool');
-		$this->connection = $pool->getConnection('mysql');
-        var_dump($this->connection);
-
+		$this->connection = $pool->getConnection('async');
     }
 
 	public function execute(): string
@@ -65,4 +62,8 @@ class AsynMysql extends Mysql implements IQuery
 		return $result;
 	}
 
+	protected function _reset(){
+	    parent::_reset();
+	    //$this->connection->setDefer(true);
+    }
 }

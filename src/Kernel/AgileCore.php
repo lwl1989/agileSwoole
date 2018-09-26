@@ -6,6 +6,7 @@ namespace Kernel;
 use Component\Orm\Connection\Mongodb;
 use Component\Orm\Connection\Mysql;
 use Component\Orm\Pool\ConnectionPool;
+use Component\Orm\Pool\PoolFactory;
 use Kernel\Core\Conf\Config;
 use Kernel\Core\Di\Container;
 use Kernel\Core\Di\IContainer;
@@ -20,9 +21,7 @@ class AgileCore
     protected $reflection;
 
     protected $workerClassMap = [
-        'pool' => ConnectionPool::class,
-        'mysql' => Mysql::class,
-        'mongodb' => Mongodb::class
+        'pool' => PoolFactory::class
     ];
 
     /**

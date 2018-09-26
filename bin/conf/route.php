@@ -14,6 +14,10 @@ return [
                                 'path'          =>      '/welcome',
                                 'dispatch'      =>     [\Controller\Welcome::class,'index']
                         ],
+                    [
+                        'path'          =>      '/async',
+                        'dispatch'      =>     [\Controller\Welcome::class,'async']
+                    ],
                         [
                                 'path'          =>      '/model/:user',
                                 'dispatch'      =>     [\Controller\Welcome::class,'userInsert']

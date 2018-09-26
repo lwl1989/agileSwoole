@@ -12,7 +12,7 @@ namespace Component\Orm\Connection;
 use Kernel\Core\Conf\Config;
 use Kernel\Core\IComponent\IConnection;
 
-class AsynMysql extends \Swoole\Coroutine\MySQL  implements IConnection
+class AsyncMysql extends \Swoole\Coroutine\MySQL  implements IConnection
 {
     use HashCode;
     use Free;

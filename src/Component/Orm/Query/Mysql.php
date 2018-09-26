@@ -2,7 +2,6 @@
 
 namespace Component\Orm\Query;
 
-use Component\Orm\Connection\Mysql as Connection;
 use Kernel\AgileCore;
 
 class Mysql implements IQuery
@@ -33,9 +32,10 @@ class Mysql implements IQuery
 	const DELETE = 'DELETE';
 
 	protected $connection;
+	protected $driver = 'pdo';
 	public function __construct()
 	{
-		$this->connection = AgileCore::getInstance()->get('pool')->getConnection('mysql');
+		$this->connection = AgileCore::getInstance()->get('pool')->getConnection($this->driver);
 	}
 
 	public function insert(array $data, string $table): IQuery

@@ -13,5 +13,10 @@ return [
                 'driver'        =>      'pdo',
                 'database'      =>      'test',
                 'table'         =>      'users'
+        ],
+        'asyncUsers'  =>      [
+            'driver'        =>      'async',
+            'database'      =>      'test',
+            'table'         =>      'users'
         ]
 ];
