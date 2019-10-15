@@ -8,6 +8,8 @@ use Kernel\Core\View\View;
 use Kernel\Swoole\Event\Event;
 use Kernel\Swoole\Event\EventTrait;
 use Kernel\Swoole\SwooleHttpServer;
+use Swoole\Http\Response;
+use Swoole\Http\Request as SRequest;
 
 class Request implements Event
 {
@@ -18,12 +20,12 @@ class Request implements Event
     protected $request;
     protected $response;
 
-    public function __construct(\swoole_http_server $server)
+    public function __construct( $server)
     {
         $this->server = $server;
     }
 
-    public function doEvent(\swoole_http_request $request, \swoole_http_response $response)
+    public function doEvent(SRequest $request, Response $response)
     {
         $request_uri = $request->server['request_uri'];
         if ($request_uri === '/favicon.ico' || strpos($request_uri, '/static/') === 0) {
@@ -40,7 +42,7 @@ class Request implements Event
         }
 
     }
-    protected function yaf(\swoole_http_request $request, \swoole_http_response $response, string $request_uri)
+    protected function yaf(SRequest $request, Response $response, string $request_uri)
     {
         $application = SwooleHttpServer::getApplication();
         try {
@@ -54,7 +56,7 @@ class Request implements Event
             $response->end(json_encode($data));
         }
     }
-    protected function normal(\swoole_http_request $request, \swoole_http_response $response)
+    protected function normal(SRequest $request, Response $response)
     {
         if (isset($request->server['request_uri']) and $request->server['request_uri'] == '/favicon.ico') {
             $response->end(json_encode(['code' => 0]));
@@ -75,16 +77,11 @@ class Request implements Event
         } else {
             $_POST = $post;
         }
-        if (class_exists('\Swoole\Coroutine')) {
-            \Swoole\Coroutine::create(function () use ($response, $request) {
-                $this->dispath($request, $response);
-            });
-        } else {
-            $this->dispath($request, $response);
-        }
+
+        $this->dispath($request, $response);
     }
 
-    public function dispath(\swoole_http_request $request, \swoole_http_response $response)
+    public function dispath(SRequest $request, Response $response)
     {
         try {
 
@@ -107,7 +104,7 @@ class Request implements Event
             ob_start();
             include($data['response']['view']); // PHP will be processed
             $content = ob_get_contents();
-            @ob_end_clean();
+            ob_end_clean();
         } else {
             $content = json_encode($data);
         }

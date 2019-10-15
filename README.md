@@ -4,8 +4,8 @@
 
 ## 安装
     php 7.0+
-    swoole 2.0+（不支持4.*）
-    composer require fresh-li/agile-swoole:v1.0
+    swoole 4.0+
+    composer require fresh-li/agile-swoole:v4.0
 
 ## 特性
     
@@ -14,22 +14,14 @@
         3. 支持多种任务模式
         4. 路由自定义事件
         5. 简单易用orm[可二次开发，实现接口，自动注入即可]
-        6. 自动协程（Coroutine，假如你的swoole是2.0以上，自动开启协程进行调度）
-        7. 支持yaf
-        8. 全面支持psr container psr http-message psr autoloader
-        9. 分布式（待开发）
-        10. 队列（待开发）
+        6. 支持yaf
+        7. 全面支持psr container psr http-message psr autoloader
+        8. 全协程任务
         
 ## 压力测试
 
 #### 测试机器
-     
-    型号名称：	MacBook Pro
-    型号标识符：	MacBookPro14,1
-    处理器名称：	Intel Core i5
-    处理器速度：	2.3 GHz
-    处理器数目：	1
-    核总数：	    2
+    
 
     
 #### 测试命令
@@ -41,30 +33,7 @@
 #### 测试结果
 
 ```
-Server Software:        swoole-http-server
-Server Hostname:        localhost
-Server Port:            9550
 
-Document Path:          /welcome
-Document Length:        2236 bytes
-
-Concurrency Level:      50
-Time taken for tests:   1.684 seconds
-Complete requests:      10000
-Failed requests:        0
-Total transferred:      23860000 bytes
-HTML transferred:       22360000 bytes
-Requests per second:    5936.99 [#/sec] (mean)
-Time per request:       8.422 [ms] (mean)
-Time per request:       0.168 [ms] (mean, across all concurrent requests)
-Transfer rate:          13833.66 [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    2  12.4      2     620
-Processing:     0    6  41.5      3     624
-Waiting:        0    5  38.7      2     624
-Total:          0    8  43.4      5     627
 ```   
         
 ## 快速开始
@@ -154,30 +123,7 @@ Total:          0    8  43.4      5     627
 
 
 ```
-Server Software:        swoole-http-server
-Server Hostname:        localhost
-Server Port:            8100
 
-Document Path:          /welcome
-Document Length:        12 bytes
-
-Concurrency Level:      50
-Time taken for tests:   1.381 seconds
-Complete requests:      10000
-Failed requests:        0
-Total transferred:      1600000 bytes
-HTML transferred:       120000 bytes
-Requests per second:    7243.39 [#/sec] (mean)
-Time per request:       6.903 [ms] (mean)
-Time per request:       0.138 [ms] (mean, across all concurrent requests)
-Transfer rate:          1131.78 [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       2
-Processing:     1    7   0.8      7      13
-Waiting:        0    7   0.8      7      13
-Total:          3    7   0.7      7      13
 ```
 
 ## orm
