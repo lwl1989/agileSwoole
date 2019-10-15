@@ -2,8 +2,13 @@
 
 一个高性能的PHP开发框架（swoole）
 
-##
-    特性
+## 安装
+    php 7.0+
+    swoole 2.0+（不支持4.*）
+    composer require fresh-li/agile-swoole:v1.0
+
+## 特性
+    
         1. 支持MVC
         2. 支持自定义常驻进程
         3. 支持多种任务模式
