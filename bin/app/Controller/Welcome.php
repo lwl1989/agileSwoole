@@ -4,7 +4,6 @@ namespace Controller;
 
 
 use Model\User;
-use Model\UserAsync;
 
 class Welcome
 {
@@ -30,7 +29,7 @@ class Welcome
 
     public function userInsert1(string $name)
     {
-        $user = new UserAsync();
+        $user = new User();
         $id = $user->insert(['name'=>$name])->execute();
         return ['id'=>$id];
     }

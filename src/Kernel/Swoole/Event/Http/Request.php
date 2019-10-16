@@ -25,6 +25,10 @@ class Request implements Event
         $this->server = $server;
     }
 
+    /**
+     * @param SRequest $request
+     * @param Response $response
+     */
     public function doEvent(SRequest $request, Response $response)
     {
         $request_uri = $request->server['request_uri'];
@@ -42,6 +46,13 @@ class Request implements Event
         }
 
     }
+
+    /**
+     * yaf actions
+     * @param SRequest $request
+     * @param Response $response
+     * @param string   $request_uri
+     */
     protected function yaf(SRequest $request, Response $response, string $request_uri)
     {
         $application = SwooleHttpServer::getApplication();
@@ -51,11 +62,16 @@ class Request implements Event
             $yaf_request->setParam('response', $response);
             $application->getDispatcher()->dispatch($yaf_request);
         } catch (\Exception $exception) {
-            var_dump($exception);
             $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
             $response->end(json_encode($data));
         }
     }
+
+    /**
+     * normal actions
+     * @param SRequest $request
+     * @param Response $response
+     */
     protected function normal(SRequest $request, Response $response)
     {
         if (isset($request->server['request_uri']) and $request->server['request_uri'] == '/favicon.ico') {
@@ -78,10 +94,11 @@ class Request implements Event
             $_POST = $post;
         }
 
-        $this->dispath($request, $response);
+        $this->dispatch($request, $response);
     }
 
-    public function dispath(SRequest $request, Response $response)
+    //dispatch router to response
+    public function dispatch(SRequest $request, Response $response)
     {
         try {
 
@@ -93,6 +110,7 @@ class Request implements Event
                 unset($data['response']['code']);
             }
         } catch (\Exception $exception) {
+            //code is Exception code
             $data = ['code' => $exception->getCode() > 0 ? $exception->getCode() : 1, 'response' => $exception->getMessage()];
         }
 
@@ -111,7 +129,8 @@ class Request implements Event
         $response->end($content);
     }
 
-    public function doClosure()
+    //call back if exists
+    public function doClosure() : array
     {
         if ($this->callback != null) {
             $this->params = [$this->request, $this->response];

@@ -45,13 +45,13 @@ class Response
      * @param boolean $set
      * @return string
      */
-    public function contentType($type, $set = false) {
-        $content_type = self::showContentType($type);
+    public function contentType(string $type, bool $set = false) : string {
+        $contentType = self::showContentType($type);
 
-        if ($content_type && $set) {
-            $this->_response->header('Content-Type', $content_type);
+        if ($contentType && $set) {
+            $this->_response->header('Content-Type', $contentType);
         }
-        return $content_type;
+        return $contentType;
     }
 
     /**
@@ -61,7 +61,7 @@ class Response
      *
      * @return string
      */
-    public static function showContentType($type) {
+    public static function showContentType($type) : string {
         $result = '';
         try {
             $config = AgileCore::getInstance()->getConfig('statics');
