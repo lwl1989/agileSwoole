@@ -83,7 +83,7 @@ class SwooleHttpServer implements Server
         return $this;
     }
 
-    public function getServer(): \swoole_server
+    public function getServer() : \Swoole\Server
     {
         return $this->server;
     }

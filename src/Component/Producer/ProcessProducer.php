@@ -9,7 +9,6 @@
 namespace Component\Producer;
 
 
-use Component\Controller\Controller;
 use Kernel\Core\Exception\ExecException;
 use Kernel\Server;
 use Swoole\Process;

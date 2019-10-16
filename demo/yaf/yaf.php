@@ -7,8 +7,8 @@
  */
 
 
-include '../vendor/autoload.php';
-include '../src/Kernel/AgileCore.php';
+include '../../vendor/autoload.php';
+include '../../src/Kernel/AgileCore.php';
 //设置为yaf
 define('APP_PATH', realpath('application'));
 $app = \Kernel\AgileCore::init([ realpath('../src')], [realpath('config')]);
